@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   attr_reader :password
 
   validates_presence_of :email, :name
-  validates :username, :presence => true, :uniqueness => true
   validates :password_digest, :presence => { :message => "Password can't be blank" }
   validates :password, :length => { :minimum => 5, :allow_nil => true }
 
@@ -39,6 +38,7 @@ class User < ActiveRecord::Base
       Authorization.create(:user => self,
                             :provider => auth_hash["provider"],
                             :uid => auth_hash["uid"])
+    end
   end
 
   private

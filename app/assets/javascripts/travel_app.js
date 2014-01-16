@@ -4,6 +4,7 @@ window.TravelApp = {
   Views: {},
   Routers: {},
   initialize: function() {
+		TravelApp.mainRouter = new TravelApp.Routers.MainRouter({ $rootEl: $('#content') });
     alert('Hello from Backbone!');
   }
 };

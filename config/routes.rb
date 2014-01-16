@@ -1,11 +1,14 @@
 TravelApp::Application.routes.draw do
+  resources :users, :only => [:create, :destroy]
   resource :session, :only => [:create, :destroy]
-  root :to => "static_pages#index"
 
   get '/login', :to => 'session#new', :as => :login
   get '/logout', :to => 'session#destroy', :as => :logout
+
   match '/auth/:provider/callback', :to => 'session#create'
   match '/auth/failure', :to => 'session#failure'
+
+  root :to => "static_pages#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

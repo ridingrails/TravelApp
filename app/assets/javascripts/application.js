@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require underscore
+//= require jquery.serializeJSON
+//= require jquery.jquery-cookie
 //= require backbone
 //= require travel_app
 //= require_tree ../templates
