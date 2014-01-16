@@ -2,9 +2,6 @@ TravelApp::Application.routes.draw do
   resources :users, :only => [:create, :destroy]
   resource :session, :only => [:create, :destroy]
 
-  get '/login', :to => 'session#new', :as => :login
-  get '/logout', :to => 'session#destroy', :as => :logout
-
   match '/auth/:provider/callback', :to => 'session#create'
   match '/auth/failure', :to => 'session#failure'
 

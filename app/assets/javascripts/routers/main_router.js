@@ -6,6 +6,7 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 
 	routes: {
 		"":"index",
+		"session/new": "newSession",
     "users/new": "newUser",
 		"login": "newSession",
 		"logout": "newSession",
@@ -23,27 +24,17 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
       TravelApp.feedRouter.navigate('', {trigger: true});
     } else {
       var user = new TravelApp.Models.User();
-      var newUserView = new TravelApp.Views.NewUserView({ model: user });
+      var newUserView = new TravelApp.Views.NewUser({ model: user });
       this._swapView(newUserView);
     }
   },
 
-  login: function() {
+  newSession: function() {
     if($.cookie('session_token')) {
       TravelApp.mainRouter.navigate('', {trigger: true});
     } else {
       var user = new TravelApp.Models.User();
-      var newSessionView = new TravelApp.Views.NewSessionView({ model: user });
-      this._swapView(newSessionView);
-    }
-  },
-
-  login: function() {
-    if($.cookie('session_token')) {
-      TravelApp.mainRouter.navigate('', {trigger: true});
-    } else {
-      var user = new TravelApp.Models.User();
-      var newSessionView = new TravelApp.Views.NewSessionView({ model: user });
+      var newSessionView = new TravelApp.Views.NewSession({ model: user });
       this._swapView(newSessionView);
     }
   },

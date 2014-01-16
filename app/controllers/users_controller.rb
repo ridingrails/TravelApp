@@ -11,10 +11,10 @@ class UsersController < ApplicationController
       render :json => @user.errors.full_messages,
              :status => :unprocessable_entity
     end
-  end
 
-  def new
-    @user = User.new
-    render :json => @user
+    def show
+      @user = User.find(params[:id])
+      render :json => @user
+    end
   end
 end
