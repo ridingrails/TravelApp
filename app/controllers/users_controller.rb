@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  before_filter :require_current_user!, :except => [:create, :new]
+  # before_filter :require_current_user!, :except => [:create]
 
   def create
     @user = User.new(params[:user])
 
     if @user.save!
-      current_user = @user
+      login!(user)
       render :json => @user
     else
       render :json => @user.errors.full_messages,

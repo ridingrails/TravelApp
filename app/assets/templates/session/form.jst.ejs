@@ -1,9 +1,15 @@
 <h3>Log In</h3>
 
-<form id="new_user_form">
-  <label for="user_username">Username</label>
-  <input type="text" id="user_username" name="user[username]">
+<form id="new_session_form" method="post">
+
+  <label for="user_name">Name</label>
+  <input type="text" id="user_name" name="user[name]">
+ 	<br>
+  <label for="user_email">Email</label>
+  <input type="text" id="user_email" name="user[email]">
+ 	<br>
   <label for="user_password">Password</label>
   <input type="password" id="user_username" name="user[password]">
-  <input type="submit" value="Create User">
+	<br>
+  <input type="submit" value="Log In">
 </form>

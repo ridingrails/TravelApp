@@ -13,14 +13,16 @@ TravelApp.Views.NewUser = Backbone.View.extend({
 	},
 
 	createUser: function (event) {
+		console.log("in new user fx")
 		event.preventDefault();
+		console.log("in createUser function");
 		var formData = $(event.currentTarget).serializeJSON();
 		var user = new TravelApp.Models.User(formData);
 		user.save({}, {
 			success: function () {
 				$.cookie("session_token", resp.get("session_token"));
 				console.log(resp);
-				TravelApp.mainRouter.navigate("", { trigger: true});
+				TravelApp.mainRouter.navigate('users/' + user.id, { trigger: true});
 			},
 
 			error: function (resp) {

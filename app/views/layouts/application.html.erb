@@ -4,11 +4,33 @@
   <title>TravelApp</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
+  <%# csrf_meta_tags %>
 </head>
 <body>
 
-<%= yield %>
+<nav class="navbar navbar-default">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle"
+			data-toggle="collapse" data-target="#my-nav">Expand</button>
+			<a class="navbar-brand" href="/">MyApp</a>
+	</div>
 
+	<div id="my-nav" class="collapse navbar-collapse">
+		<ul class="nav navbar-nav">
+			<li class=""><a href="/home">Home</a></li>
+			<li><a href="/contact">Contact</a></li>
+		  <li><a href="/about">About</a></li>
+		</ul>
+	</div>
+</nav>
+
+<div class="container">
+	<div class="row">
+    <%= yield %>
+	</div>
+</div>
+
+<%= current_user ? current_user.name : "No current user" %>
+<%= debug params %>
 </body>
 </html>

@@ -15,12 +15,12 @@ TravelApp.Views.NewSession = Backbone.View.extend({
 	createSession: function (event) {
 		event.preventDefault();
 		var formData = $(event.currentTarget).serializeJSON();
-		var session = new TravelApp.Models.User(formData);
+		var session = new TravelApp.Models.Session(formData);
 		session.save({}, {
 			success: function () {
 				$.cookie("session_token", resp.get("session_token"));
 				console.log(resp);
-				TravelApp.mainRouter.navigate("", { trigger: true});
+				TravelApp.mainRouter.navigate('users/' + resp.get('id'), { trigger: true});
 			},
 
 			error: function (resp) {

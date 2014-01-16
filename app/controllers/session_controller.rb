@@ -1,5 +1,5 @@
 class SessionController < ApplicationController
-  before_filter :require_no_current_user!, :only => [:create]
+  before_filter :require_no_current_user!, :only => [:create, :failure]
 
   def create
     @user = User.find_by_username(params[:user][:username])

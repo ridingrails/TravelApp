@@ -1,9 +1,19 @@
 <h3>New User</h3>
 
-<form id="new_session_form">
-  <label for="user_username">Username</label>
-  <input type="text" id="user_username" name="user[username]">
+<form id="new_session_form" method="post">
+
+  <label for="user_name">Name</label>
+  <input type="text" id="user_name" name="user[name]">
+	<br>
+  <label for="user_email">Email</label>
+  <input type="text" id="user_email" name="user[email]">
+	<br>
   <label for="user_password">Password</label>
   <input type="password" id="user_username" name="user[password]">
+	<br>
   <input type="submit" value="Log In">
 </form>
+
+
+
+<div class="fb-login-button" show-faces="true" width="200" max-rows="1"></div>
