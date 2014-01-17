@@ -24,10 +24,10 @@ module SessionHelper
   end
 
   def require_current_user!
-    render :json => "Need to be signed in" unless current_user
+    render :json => ["Need to be signed in"] unless current_user
   end
 
   def require_no_current_user!
-    render :json => "You are already signed in" if current_user
+    render :json => ["You are already signed in"] if current_user
   end
 end

@@ -5,6 +5,7 @@ window.TravelApp = {
   Routers: {},
   initialize: function() {
 		TravelApp.mainRouter = new TravelApp.Routers.MainRouter({ $rootEl: $('#content') });
+		TravelApp.mainRouter._installHeader();
 		Backbone.history.start();
   }
 };

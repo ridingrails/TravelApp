@@ -1,7 +1,8 @@
 TravelApp.Views.TopNavbar = Backbone.View.extend({
-	// events: {
-	//
-	// },
+
+	events: {
+		'click #sign_out' : 'signOut'
+	},
 
 	template: JST["layout/top_navbar"],
 
@@ -9,5 +10,9 @@ TravelApp.Views.TopNavbar = Backbone.View.extend({
 		var renderedContent = this.template();
 		this.$el.html(renderedContent);
 		return this;
+	},
+
+	signOut: function() {
+	  TravelApp.mainRouter.navigate('logout', { trigger: true });
 	}
 });

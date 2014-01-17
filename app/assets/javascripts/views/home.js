@@ -1,9 +1,5 @@
 TravelApp.Views.Home = Backbone.View.extend({
 
-	initialize: function () {
-
-	},
-
 	events: {
 		"click #new_user_form" : "newUser",
 		"click #new_session_form" : "newSession",
