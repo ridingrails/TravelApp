@@ -14,6 +14,7 @@ TravelApp.Views.NewSession = Backbone.View.extend({
 
 	createSession: function (event) {
 		event.preventDefault();
+		window.alert('in new session fx');
 		var formData = $(event.currentTarget).serializeJSON();
 		var session = new TravelApp.Models.Session(formData);
 		session.save({}, {

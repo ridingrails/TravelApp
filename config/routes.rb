@@ -1,5 +1,5 @@
 TravelApp::Application.routes.draw do
-  resources :users, :only => [:create, :destroy]
+  resources :users, :only => [:create, :destroy, :show]
   resource :session, :only => [:create, :destroy]
 
   # match '/auth/:provider/callback', :to => 'session#create'

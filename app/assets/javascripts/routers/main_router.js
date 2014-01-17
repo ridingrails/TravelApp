@@ -40,8 +40,7 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 
   showUser: function (id) {
     var that = this;
-    var user = new TravelApp.Models.User();
-    user.id = id
+    var user = new TravelApp.Models.User({ id: id });
     user.fetch({
       success: function () {
         var userProfile = new TravelApp.Views.UserProfile({ model: user });

@@ -1,37 +1,48 @@
 TravelApp.Views.Home = Backbone.View.extend({
 
 	events: {
-		"click #new_user_form":"newUser",
-		"click #new_session_form":"newSession",
-    "click #sign_out":"destroySession",
+		"click #new_user_form" : "newUser",
+		"click #new_session_form" : "newSession",
+    "click #sign_out" : "signOut",
 	},
 
 	template: JST["application/home"],
 
-	render: function () {
+	render: function() {
 		var renderedContent = this.template();
 		this.$el.html(renderedContent);
 		return this;
 	},
 
-	newUser: function (event) {
+	newUser: function(event) {
 		event.preventDefault();
 		TravelApp.mainRouter.navigate('users/new', { trigger: true });
 	},
 
-	newSession: function (event) {
+	newSession: function(event) {
 		event.preventDefault();
 		TravelApp.mainRouter.navigate('session/new', { trigger: true });
 	},
 
-	destroySession: function (event) {
+	signOut: function(event) {
 		event.preventDefault();
-		var user = new TravelApp.Models.User({
+		var session = new TravelApp.Models.Session({
 																session_token:
 																$.cookie('session_token')
 															});
+			debugger
+		session.destroy({
+			success: function() {
+				$.removeCookie('session_token');
+				var view = new TravelApp.Views.Home();
+				TravelApp.mainRouter.navigate('', { trigger: true });
+			},
 
-		TravelApp.mainRouter.navigate('session/new', { trigger: true });
+			error: function() {
+				console.log('session not destroyed')
+			}
+		});
+		TravelApp.mainRouter.navigate('', { trigger: true });
 	}
 	// me: function () {
 	// 	event.preventDefault();
