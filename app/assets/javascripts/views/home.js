@@ -2,7 +2,8 @@ TravelApp.Views.Home = Backbone.View.extend({
 
 	events: {
 		"click #new_user_form":"newUser",
-		"click #new_session_form":"newSession"
+		"click #new_session_form":"newSession",
+    "click #sign_out":"destroySession",
 	},
 
 	template: JST["application/home"],
@@ -21,5 +22,19 @@ TravelApp.Views.Home = Backbone.View.extend({
 	newSession: function (event) {
 		event.preventDefault();
 		TravelApp.mainRouter.navigate('session/new', { trigger: true });
+	},
+
+	destroySession: function (event) {
+		event.preventDefault();
+		var user = new TravelApp.Models.User({
+																session_token:
+																$.cookie('session_token')
+															});
+
+		TravelApp.mainRouter.navigate('session/new', { trigger: true });
 	}
+	// me: function () {
+	// 	event.preventDefault();
+	// 	TravelApp.mainRouter.navigate('auth/facebook', { trigger: true });
+	// }
 });

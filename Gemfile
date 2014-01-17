@@ -20,6 +20,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
+gem 'figaro'
 gem 'jquery-rails'
 gem 'bcrypt-ruby', :require => 'bcrypt'
 gem 'omniauth'

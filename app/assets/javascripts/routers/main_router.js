@@ -8,10 +8,9 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 		"":"index",
 		"session/new": "newSession",
     "users/new": "newUser",
+	  "users/:id": "showUser",
 		"login": "newSession",
-		"logout": "newSession",
-		"users/:id": "showUser",
-		"feeds/:id": "showFeed"
+		"logout": "newSession"
 	},
 
 	index: function () {
@@ -21,7 +20,7 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 
   newUser: function() {
     if($.cookie('session_token')) {
-      TravelApp.feedRouter.navigate('', {trigger: true});
+      TravelApp.mainRouter.navigate('', {trigger: true});
     } else {
       var user = new TravelApp.Models.User();
       var newUserView = new TravelApp.Views.NewUser({ model: user });
@@ -47,18 +46,6 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
       success: function () {
         var userProfile = new TravelApp.Views.UserProfile({ model: user });
         that._swapView(userProfile);
-      }
-    });
-  },
-
-  showFeed: function (id) {
-    var that = this;
-    var feedModel = new TravelApp.Models.Feed();
-    feedModel.id = id
-    feedModel.fetch({
-      success: function () {
-        var feedView = new TravelApp.Views.FeedView({ model: feedModel });
-        that._swapView(feedView);
       }
     });
   },

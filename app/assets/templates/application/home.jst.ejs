@@ -42,12 +42,33 @@
 </div> -->
 <div class="jumbotron">
 	<h1 carousel-caption>Placeholder</h1>
+	<% if ($.cookie('session_token')) { %>
+		<button
+		 class="btn home-btn btn-default"
+		 id='sign_out'>
+		   Sign Out
+	  </button>
 
-	<a href='#' class="btn home-btn btn-primary"
-	            id='new_user_form'>Sign Up</a>
+	<% } else { %>
 
-	<a href='#' class="btn home-btn btn-primary"
-							id='new_session_form'>Sign In</a>
-	<a href="#me" class="btn btn-primary btn-large btn-login">Login with Facebook</a>
+		<a href='#'
+		   class="btn home-btn btn-primary"
+		   id='new_user_form'>
+		     Sign Up
+		</a>
+
+		<a href='#'
+		   class="btn home-btn btn-primary"
+			 id='new_session_form'>
+			   Sign In
+		</a>
+
+		<a href="/auth/facebook"
+		   class="btn btn-primary btn-large btn-login me">
+			   Login with Facebook
+		</a>
+
+	<% } %>
+
 
 </div>

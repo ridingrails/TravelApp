@@ -5,16 +5,11 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     if @user.save!
-      login!(user)
+      login!(@user)
       render :json => @user
     else
       render :json => @user.errors.full_messages,
              :status => :unprocessable_entity
-    end
-
-    def show
-      @user = User.find(params[:id])
-      render :json => @user
     end
   end
 end

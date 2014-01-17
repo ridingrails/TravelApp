@@ -2,32 +2,13 @@ class SessionController < ApplicationController
   before_filter :require_no_current_user!, :only => [:create, :failure]
 
   def create
-    @user = User.find_by_username(params[:user][:username])
-
+    @user = User.find_by_credentials(params[:user][:email],
+                                        params[:user][:password])
     if @user
-      if @user.is_password?(password)
-        login!(user)
-        render :json => @user
-      else
-        render :json => @user.errors
-      end
+      login!(user)
+      render :json => @user
     else
-      auth_hash = request.env['omniauth.auth']
-      if logged_in?
-        @user = User.find_by_session_token(session[:session_token])
-        @user.add_provider(auth_hash)
-        render :json => { message: "You are logged in with #{auth_hash["provider"]}! You have already signed up." }
-      else
-        auth = Authorization.find_or_create(auth_hash)
-        @user = User.new(:name => auth_hash["user_info"]["name"],
-                         :email => auth_hash["user_info"]["email"],
-                         :username => params[:user][:username])
-        @user.authorizations.build(:provider => auth_hash["provider"],
-                                   :uid => auth_hash["uid"])
-        @user.save
-        login!(user)
-        render :json => { message: "Hi #{user.name}! You've signed up." }
-      end
+      render :json => ["Invalid username or password"]
     end
   end
 
@@ -39,5 +20,11 @@ class SessionController < ApplicationController
 
   def failure
     render :json => { message: "Authorization denied."}
+  end
+
+  protected
+
+  def auth_hash
+    request.env['omniauth.auth']
   end
 end

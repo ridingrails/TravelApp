@@ -1,16 +1,16 @@
 class User < ActiveRecord::Base
   before_validation :ensure_session_token
-  attr_accessible :email, :username, :name, :password, :session_token
+  attr_accessible :email, :username, :name, :user_source, :password, :session_token
   attr_reader :password
 
-  validates_presence_of :email, :name
+  validates :email, :presence => { :message => "Email can't be blank" }
   validates :password_digest, :presence => { :message => "Password can't be blank" }
   validates :password, :length => { :minimum => 5, :allow_nil => true }
 
   has_many :authorizations
 
-  def self.find_by_credentials(username, password)
-    user = User.find_by_username(username)
+  def self.find_by_credentials(email, password)
+    user = User.find_by_email(email)
     user.is_password?(password) ? user : nil
   end
 
@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
                             :provider => auth_hash["provider"],
                             :uid => auth_hash["uid"])
     end
+  end
+
+  def self.from_auth(auth)
+
   end
 
   private
