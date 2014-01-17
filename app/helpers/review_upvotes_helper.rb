@@ -1,0 +1,2 @@
+module ReviewUpvotesHelper
+end

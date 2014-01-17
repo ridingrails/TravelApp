@@ -1,0 +1,2 @@
+module TripUpvotesHelper
+end

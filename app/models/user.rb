@@ -32,13 +32,19 @@ class User < ActiveRecord::Base
   has_many(
     :groups,
     :through => :memberships,
-    :source => :member
+    :source => :group
+  )
+
+  has_many(
+    :groupmates,
+    :through => :groups,
+    :source => :members
   )
 
   has_many(
     :reservations,
     :primary_key => :id,
-    :foreign_key => :attendee,
+    :foreign_key => :attendee_id,
     :dependent => :destroy,
     :class_name => "Reservation"
   )
@@ -46,12 +52,20 @@ class User < ActiveRecord::Base
   has_many(
     :memberships,
     :primary_key => :id,
-    :foreign_key => :member,
+    :foreign_key => :member_id,
     :dependent => :destroy,
     :class_name => "Membership"
   )
 
   has_many :reviews
+
+  has_many(
+    :interests,
+    :through => :user_interests,
+    :source => :interest
+  )
+
+  has_many :user_interests
 
   def self.find_by_credentials(email, password)
     user = User.find_by_email(email)
@@ -74,19 +88,6 @@ class User < ActiveRecord::Base
 
   def is_password?(password)
     BCrypt::Password.new(self.password_digest).is_password?(password)
-  end
-
-  def add_provider(auth_hash)
-    unless authorizations.find_by_provider_and_uid(auth_hash["provider"],
-                                                   auth_hash["uid"])
-      Authorization.create(:user => self,
-                            :provider => auth_hash["provider"],
-                            :uid => auth_hash["uid"])
-    end
-  end
-
-  def self.from_auth(auth)
-
   end
 
   private

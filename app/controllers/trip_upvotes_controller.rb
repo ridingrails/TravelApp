@@ -1,0 +1,2 @@
+class TripUpvotesController < ApplicationController
+end
