@@ -9,6 +9,50 @@ class User < ActiveRecord::Base
 
   has_many :authorizations
 
+  has_many(
+    :trips_planned,
+    :primary_key => :id,
+    :foreign_key => :planner_id,
+    :class_name => "Trip"
+  )
+
+  has_many(
+    :trips,
+    :through => :reservations,
+    :source => :attendee
+  )
+
+  has_many(
+    :groups_created,
+    :primary_key => :id,
+    :foreign_key => :creator_id,
+    :class_name => "Group"
+  )
+
+  has_many(
+    :groups,
+    :through => :memberships,
+    :source => :member
+  )
+
+  has_many(
+    :reservations,
+    :primary_key => :id,
+    :foreign_key => :attendee,
+    :dependent => :destroy,
+    :class_name => "Reservation"
+  )
+
+  has_many(
+    :memberships,
+    :primary_key => :id,
+    :foreign_key => :member,
+    :dependent => :destroy,
+    :class_name => "Membership"
+  )
+
+  has_many :reviews
+
   def self.find_by_credentials(email, password)
     user = User.find_by_email(email)
     user.is_password?(password) ? user : nil
