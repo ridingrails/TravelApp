@@ -2,6 +2,7 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 
 	initialize: function (options) {
 		this.$rootEl = options.$rootEl;
+		this._installHeader;
 	},
 
 	routes: {
@@ -10,7 +11,7 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
     "users/new": "newUser",
 	  "users/:id": "showUser",
 		"login": "newSession",
-		"logout": "newSession"
+		"logout": "signOut"
 	},
 
 	index: function () {
@@ -48,6 +49,32 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
       }
     });
   },
+
+	signOut: function(event) {
+		event.preventDefault();
+		var that = this;
+		var session = new TravelApp.Models.Session({
+																session_token:
+																$.cookie('session_token')
+															});
+			debugger
+		session.destroy({
+			success: function() {
+				$.removeCookie('session_token');
+				var homeView = new TravelApp.Views.Home();
+				that._swapView(homeView);
+			},
+
+			error: function() {
+				console.log('session not destroyed')
+			}
+		});
+	},
+
+	_installHeader: function () {
+		var topNavbar = new TravelApp.Views.TopNavbar();
+		$('#top_navbar').html(topNavbar.render().$el);
+	},
 
 	_swapView: function (newView) {
 		this._currentView && this._currentView.remove();

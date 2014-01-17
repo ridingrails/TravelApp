@@ -20,12 +20,12 @@ TravelApp.Views.NewUser = Backbone.View.extend({
 			success: function (resp) {
 				window.alert('user created');
 				$.cookie("session_token", resp.get("session_token"));
-				window.alert('redirecting to show');
 				TravelApp.mainRouter.navigate('users/' + user.id, { trigger: true });
 			},
 
 			error: function (resp) {
 				console.log("failed");
+				this.render();
 			}
 		});
 	}
