@@ -1,6 +1,5 @@
 class Trip < ActiveRecord::Base
-  attr_accessible :planner_id, :title, :theme, :description :start_date,
-   :end_date, :privacy, :start_date, :end_date, :start_loc, :end_loc
+  attr_accessible :planner_id, :title, :theme, :description, :start_date, :end_date, :privacy, :start_loc, :end_loc
 
   belongs_to(
     :planner,

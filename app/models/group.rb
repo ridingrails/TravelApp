@@ -1,7 +1,7 @@
 class Group < ActiveRecord::Base
   attr_accessible :creator_id, :title, :description, :theme, :privacy
 
-  validates_presence_of :user_id, :title, :theme, :privacy
+  validates_presence_of :creator_id, :title, :theme, :privacy
 
   belongs_to(
     :creator,

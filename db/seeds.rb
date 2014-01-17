@@ -5,3 +5,14 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+ActiveRecord::Base.transaction do
+  10.times do |n|
+    FactoryGirl.create(:user)
+  end
+  10.times do |n|
+    FactoryGirl.create(:group)
+  end
+  10.times do |n|
+    FactoryGirl.create(:trip)
+  end
+end
