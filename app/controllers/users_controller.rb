@@ -14,6 +14,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    render :json => @user
+    @user = User.find(params[:id])
+    render "show", params[:type] => @type
   end
 end

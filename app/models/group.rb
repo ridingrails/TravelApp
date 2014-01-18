@@ -19,7 +19,7 @@ class Group < ActiveRecord::Base
   )
 
   has_many(
-    :members,
+    :group_members,
     :through => :memberships,
     :source => :member
   )

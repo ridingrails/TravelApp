@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   has_many(
     :trips,
     :through => :reservations,
-    :source => :attendee
+    :source => :trip
   )
 
   has_many(
@@ -30,14 +30,22 @@ class User < ActiveRecord::Base
   )
 
   has_many(
-    :groups,
+    :memberships,
+    :primary_key => :id,
+    :foreign_key => :member_id,
+    :dependent => :destroy,
+    :class_name => "Membership"
+  )
+
+  has_many(
+    :groups_attended,
     :through => :memberships,
     :source => :group
   )
 
   has_many(
-    :groupmates,
-    :through => :groups,
+    :group_mates,
+    :through => :groups_attended,
     :source => :members
   )
 
@@ -47,14 +55,6 @@ class User < ActiveRecord::Base
     :foreign_key => :attendee_id,
     :dependent => :destroy,
     :class_name => "Reservation"
-  )
-
-  has_many(
-    :memberships,
-    :primary_key => :id,
-    :foreign_key => :member_id,
-    :dependent => :destroy,
-    :class_name => "Membership"
   )
 
   has_many :reviews
