@@ -1,4 +1,4 @@
-TravelApp.Views.TripItem = Backbone.View.extend({
+TravelApp.Views.InterestItem = Backbone.View.extend({
 
 	// initialize: function() {
 	//
@@ -12,10 +12,10 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 	// 	'click #new_trip': 'newTrip'
 	// },
 
-	template: JST["trips/item"],
+	template: JST["interests/item"],
 
 	render: function () {
-		var renderedContent = this.template({ trip: this.model });
+		var renderedContent = this.template({ interest: this.model });
 		this.$el.html(renderedContent);
 		return this;
 	}
