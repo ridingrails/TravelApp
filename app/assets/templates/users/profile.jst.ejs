@@ -1,5 +1,24 @@
-<h3>User show</h3>
-<h3><%= user.id %></h3>
-<h3><%= user.escape('email') %></h3>
-<br>
+
 <h3><%= user.escape('name') %></h3>
+<div class="col-xs-3">
+	<div class="col-xs-12">
+		<img src="http://placehold.it/150x200">
+	</div>
+	<br>
+	<br>
+	<div class="col-xs-12">
+		<h3>Caption</h3>
+	</div>
+</div>
+<div class="col-xs-9">
+	<h3>Text</h3>
+</div>
+<div class="col-xs-9 col-xs-offset-3">
+	<h3>Your Groups</h3>
+	<ul>
+		<% user.get('groups').each(function (group) { %>
+			<li><%= group.escape('title') %> --
+		     <%= group.escape('theme') %></li>
+		<% }); %>
+  </ul>
+</div>

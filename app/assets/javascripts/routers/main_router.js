@@ -44,7 +44,9 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
     var user = new TravelApp.Models.User({ id: id });
     user.fetch({
       success: function () {
-        var userProfile = new TravelApp.Views.UserProfile({ model: user });
+				console.log(user.get('groups'));
+        var userProfile = new TravelApp.Views.UserProfile({
+									model: user });
         that._swapView(userProfile);
 				that._installHeader();
       }
