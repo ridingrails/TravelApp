@@ -1,11 +1,11 @@
 TravelApp.Views.UserProfile = Backbone.View.extend({
 
-	// initialize: function() {
-	//
+	initialize: function() {
+		this.$groups = $('#groups');
 	//     _.bindAll(this, 'detect_scroll');
 	//     // bind to window
 	//     $(window).scroll(this.detect_scroll);
-	// },
+	},
 
 	events: {
 		'click #new_group': 'newGroup',
@@ -15,24 +15,29 @@ TravelApp.Views.UserProfile = Backbone.View.extend({
 	template: JST["users/profile"],
 
 	render: function () {
-		var that = this;
 		var groups = this.model.get('groups');
 		var trips = this.model.get('trips');
 		var interests = this.model.get('interests');
 		var renderedContent = this.template({ user: this.model });
+		this.$el.html(renderedContent);
+		var that = this;
 		groups.each(function(group) {
 			var view = new TravelApp.Views.GroupItem({ model: group });
-			$('.groups').append(view.render().$el);
+	    that.$('#groups').append(view.render().$el);
 		});
 		trips.each(function(trip) {
 			var view = new TravelApp.Views.TripItem({ model: trip });
-			$('.trips').append(view.render().$el);
+			that.$('#trips').append(view.render().$el);
 		});
 		interests.each(function(interest) {
 			var view = new TravelApp.Views.InterestItem({ model: interest });
-			$('.interests').append(view.render().$el);
+			that.$('#interests').append(view.render().$el);
 		});
-		this.$el.html(renderedContent);
-		return this;
+		return that;
+	},
+
+	renderSubView: function(view, selector) {
+		alert('about to render sub view');
+		selector.append(view.render().$el);
 	}
 })

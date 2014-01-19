@@ -1,7 +1,7 @@
 TravelApp.Views.GroupItem = Backbone.View.extend({
 
-	// initialize: function() {
-	//
+	initialize: function() {
+
 	//     _.bindAll(this, 'detect_scroll');
 	//     // bind to window
 	//     $(window).scroll(this.detect_scroll);
@@ -10,7 +10,7 @@ TravelApp.Views.GroupItem = Backbone.View.extend({
 	// events: {
 	// 	'click #new_group': 'newGroup',
 	// 	'click #new_trip': 'newTrip'
-	// },
+	},
 
 	template: JST["groups/item"],
 
