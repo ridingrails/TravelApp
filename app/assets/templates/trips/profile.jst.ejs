@@ -14,13 +14,12 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-10 col-xs-offset-2">
-		  <h4>From: <%= trip.escape('start_loc') %></h4>
-		  <h4>To: <%= trip.escape('end_loc') %></h4>
+		  <h4>Destination: <%= trip.escape('end_loc') %></h4>
 		</div>
 	</div>
 	<br>
 	<br>
-	<div class="col-xs-10 col-xs-offset-2 trip-details">
+	<div class="col-xs-10 col-xs-offset-2 trip-details" data-loc="<%= trip.escape('end_loc') %>">
 		<h4><a href='#'><strong>Trip Details</strong></a></h4>
 		 <div id="map-canvas"></div>
 	</div>
@@ -29,7 +28,7 @@
 <script type="text/javascript">
   function initialize() {
     var mapOptions = {
-      center: new google.maps.LatLng(-34.397, 150.644),
+      center: new google.maps.LatLng($('div.trip-details').attr('data-loc')),
       zoom: 8
     };
     var map = new google.maps.Map(document.getElementById("map-canvas"),

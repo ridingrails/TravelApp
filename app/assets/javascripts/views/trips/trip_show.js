@@ -16,7 +16,10 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		this.model.set('start_date', newStart);
 		var newEnd = this._parseTime(this.model.get('end_date'));
 		this.model.set('end_date', newEnd);
-		var latLngRes = this.latLng(this.model.get('end_loc'));
+		var destination = this.model.get('end_loc');
+		alert(destination)
+		var latLngRes = this.latLng(destination);
+		alert(latLngRes);
 		this.model.set('latLngRes', latLngRes);
 		var renderedContent = this.template({ trip: this.model, latLngRes: latLngRes });
 		this.$el.html(renderedContent);
@@ -85,6 +88,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		}, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 			  that.model.set('latLng', results[0].geometry.location);
+
 			} else {
 				alert('not ok');
 			}

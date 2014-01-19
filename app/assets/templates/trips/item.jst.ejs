@@ -8,8 +8,8 @@
 		</div>
 		<div class="col-xs-10 col-xs-offset-2 content">
 			<p><%= trip.escape('theme') %></p>
-			<p>Start: <%= trip.escape('start_loc') %> -- <%= trip.escape('start_date') %></p>
-			<p>End: <%= trip.escape('end_loc') %> -- <%= trip.escape('end_date') %></p>
+			<p>From <%= trip.escape('start_date') %> To <%= trip.escape('end_date') %></p>
+			<p>Destination: <%= trip.escape('end_loc') %></p>
 		</div>
 	</div
 </div>
