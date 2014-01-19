@@ -8,11 +8,11 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 	// 	'click #new_trip': 'newTrip'
 	// },
 
-	template: JST["trips/item"],
-
 	events: {
-		"click .content-item-main" : "showTrip"
-	}
+		'click #content-item-main' : 'showTripDetail'
+	},
+
+	template: JST["trips/item"],
 
 	render: function () {
 		console.log(this.model);
@@ -36,11 +36,12 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 		return res;
 	},
 
-	showTrip: function(event) {
+	showTripDetail: function(event) {
 		event.preventDefault();
-		var tripView = new TravelApp.Views.TripShow( trip: this.model );
-
-	}
+		alert('in show trip');
+		var dataId = $(event.currentTarget).attr('data-id');
+		TravelApp.mainRouter.navigate( 'trips/' + dataId, { trigger:true });
+	},
 
 	_mapMonths: function(num) {
 		var map = {

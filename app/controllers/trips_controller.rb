@@ -13,6 +13,6 @@ class TripsController < ApplicationController
 
   def show
     @trip = Trip.find(params[:id])
-    render "show"
+    render :json => @trip
   end
 end

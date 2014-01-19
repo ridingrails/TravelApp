@@ -10,7 +10,6 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find(params[:id])
-    render "show"
+    render :json => @group
   end
 end

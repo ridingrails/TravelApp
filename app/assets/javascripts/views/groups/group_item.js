@@ -6,13 +6,20 @@ TravelApp.Views.GroupItem = Backbone.View.extend({
 	//     // bind to window
 	//     $(window).scroll(this.detect_scroll);
 	// },
+  },
 
-	// events: {
-	// 	'click #new_group': 'newGroup',
-	// 	'click #new_trip': 'newTrip'
+	events: {
+		'click #content-item-main' : 'showGroupDetail'
 	},
 
 	template: JST["groups/item"],
+
+	showGroupDetail: function(event) {
+		event.preventDefault();
+		alert('in show group');
+		var dataId = $(event.currentTarget).attr('data-id');
+		TravelApp.mainRouter.navigate( 'groups/' + dataId, { trigger:true });
+	},
 
 	render: function () {
 		var renderedContent = this.template({ group: this.model });

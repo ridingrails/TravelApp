@@ -1,7 +1,6 @@
 TravelApp.Views.UserProfile = Backbone.View.extend({
 
 	initialize: function() {
-		this.$groups = $('#groups');
 	//     _.bindAll(this, 'detect_scroll');
 	//     // bind to window
 	//     $(window).scroll(this.detect_scroll);
@@ -9,7 +8,8 @@ TravelApp.Views.UserProfile = Backbone.View.extend({
 
 	events: {
 		'click #new_group': 'newGroup',
-		'click #new_trip': 'newTrip'
+		'click #new_trip': 'newTrip',
+		'click #content-item-main' : 'showContentDetail'
 	},
 
 	template: JST["users/profile"],

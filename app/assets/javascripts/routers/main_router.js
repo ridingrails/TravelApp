@@ -10,6 +10,8 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 		"session/new": "newSession",
     "users/new": "newUser",
 	  "users/:id": "showUser",
+		"trips/:id": "showTrip",
+		"groups/:id": "showGroup",
 		"login": "newSession",
 		"logout": "signOut"
 	},
@@ -51,6 +53,34 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
       }
     });
   },
+
+	showTrip: function(id) {
+		var that = this;
+		var trip = new TravelApp.Models.Trip({ id: id });
+		trip.fetch({
+			success: function() {
+				console.log(trip.get('title'));
+        var tripShow = new TravelApp.Views.TripShow({
+									model: trip });
+        that._swapView(tripShow);
+				that._installHeader();
+			}
+		})
+	},
+
+	showGroup: function(id) {
+		alert('in show group detail');
+		var that = this;
+		var group = new TravelApp.Models.Group({ id: id });
+		group.fetch({
+			success: function() {
+        var groupShow = new TravelApp.Views.GroupShow({
+									model: group });
+        that._swapView(groupShow);
+				that._installHeader();
+			}
+		})
+	},
 
 	signOut: function() {
 		var that = this;
