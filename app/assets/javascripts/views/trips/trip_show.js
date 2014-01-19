@@ -12,7 +12,13 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	template: JST["trips/profile"],
 
 	render: function () {
-		var renderedContent = this.template({ trip: this.model });
+		var newStart = this._parseTime(this.model.get('start_date'));
+		this.model.set('start_date', newStart);
+		var newEnd = this._parseTime(this.model.get('end_date'));
+		this.model.set('end_date', newEnd);
+		var latLngRes = this.latLng(this.model.get('end_loc'));
+		this.model.set('latLngRes', latLngRes);
+		var renderedContent = this.template({ trip: this.model, latLngRes: latLngRes });
 		this.$el.html(renderedContent);
 		// var groups = this.model.get('groups');
 		// var trips = this.model.get('trips');
@@ -42,6 +48,16 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		TravelApp.mainRouter.navigate( 'trips/' + dataId, { trigger:true });
 	},
 
+	_parseTime: function(time) {
+		var year = time.slice(0,4);
+		var month = this._mapMonths(time.slice(5,7));
+		var day = time.slice(8,10);
+		var hour =
+		   parseInt(time.slice(11,13)) < 12 ? time.slice(11,13) + ":00 AM" : time.slice(11,13) % 12 + ":00 PM";
+	  var res = day + " " + month + " " + year + " " + hour;
+		return res;
+	},
+
 	_mapMonths: function(num) {
 		var map = {
 			"01":"January",
@@ -58,5 +74,20 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 			"12":"December"
 		}
 		return map[num];
+	},
+
+	latLng: function(destination) {
+		var that = this;
+		geo = new google.maps.Geocoder();
+		alert('in latLng');
+		geo.geocode({
+			'address': destination
+		}, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+			  that.model.set('latLng', results[0].geometry.location);
+			} else {
+				alert('not ok');
+			}
+		});
 	}
 })
