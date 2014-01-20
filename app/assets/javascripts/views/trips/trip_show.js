@@ -4,6 +4,12 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	//     _.bindAll(this, 'detect_scroll');
 	//     // bind to window
 	//     $(window).scroll(this.detect_scroll);
+	  var that = this;
+		var dest = this.model.get('end_loc');
+		this.latLng(dest, function () {
+			console.log("back in init " + that.model.get('lat'));
+		  console.log("back in init " + that.model.get('lng'));
+		});
 	},
 
 	events: {
@@ -18,10 +24,9 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		this.model.set('end_date', newEnd);
 		var destination = this.model.get('end_loc');
 		alert(destination);
-		this.latLng(destination);
-		alert(this.model.get('latLng'));
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
+		return this;
 		// var groups = this.model.get('groups');
 		// var trips = this.model.get('trips');
 		// var interests = this.model.get('interests');
@@ -40,7 +45,6 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		// 	var view = new TravelApp.Views.InterestItem({ model: interest });
 		// 	that.$('#interests').append(view.render().$el);
 		// });
-		return this;
 	},
 
 	showTripDetail: function(event) {
@@ -78,7 +82,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		return map[num];
 	},
 
-	latLng: function(destination) {
+	latLng: function(destination, callback) {
 		var that = this;
 		geo = new google.maps.Geocoder();
 		alert('in latLng' + " " + "dest: " + destination);
@@ -86,14 +90,40 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 			'address': destination
 		}, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				console.log("here are the results: ");
-				console.log(results[0].geometry.location.lat());
-			  that.model.set('latLng', [results[0].geometry.location.lat(),
-					results[0].geometry.location.lng()]);
-					console.log(that.model.get('latLng'));
+				alert("set lat lng");
+
+			  that.model.set('lat', results[0].geometry.location.lat());
+				that.model.set('lng', results[0].geometry.location.lng());
+        that.buildMap();
+
+					console.log('variable is ' + that.model.get('lat') + "," + that.model.get('lng'));
+					console.log('variable should be ' + [results[0].geometry.location.lat(),
+					results[0].geometry.location.lng()] );
+					callback();
 			} else {
 				alert('not ok');
 			}
+		});
+	},
+
+	buildMap: function () {
+		var latitude = this.model.get('lat');
+		alert(latitude); //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
+		var longitude = this.model.get('lng');
+		alert(longitude);		//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
+    var mapOptions = {
+      center: new google.maps.LatLng(latitude, longitude),
+      zoom: 10
+    };
+		alert(mapOptions['center']);
+
+    var map = new google.maps.Map($("#map-canvas")[0],
+        mapOptions);
+
+		var marker = new google.maps.Marker({
+		    position: mapOptions['center'],
+		    map: map,
+		    title: this.model.get('end_loc')
 		});
 	}
 })

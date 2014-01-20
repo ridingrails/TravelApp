@@ -1,17 +1,3 @@
-<script type="text/javascript">
-  function initialize() {
-
-    var mapOptions = {
-      center: new google.maps.LatLng(-50.000, 100.000),
-      zoom: 8
-    };
-		alert(mapOptions['center']);
-    var map = new google.maps.Map(document.getElementById("map-canvas"),
-        mapOptions);
-  }
-	_.defer(initialize);
-</script>
-
 <div class="col-xs-12">
 	<div class="row">
 		<div class="col-xs-10 col-xs-offset-2">
@@ -32,7 +18,7 @@
 	</div>
 	<br>
 	<br>
-	<div class="col-xs-10 col-xs-offset-2 trip-details" data-loc="<%= trip.escape('latLng') %>">
+	<div class="col-xs-10 col-xs-offset-2 trip-details" id="trip-details" data-lat="<%= trip.escape('lat') %>" data-lng="<%= trip.escape('lng') %>">
 		<h4><a href='#'><strong>Trip Details</strong></a></h4>
 		 <div id="map-canvas"></div>
 	</div>
