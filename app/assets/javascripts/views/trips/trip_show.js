@@ -141,26 +141,62 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	},
 
 	queryPlaces: function() {
+		var that = this;
+		var latitude = this.model.get('lat');
+  //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
+		var longitude = this.model.get('lng');
+	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
+    var mapOptions = {
+      center: new google.maps.LatLng(latitude, longitude),
+      zoom: 10
+    };
+
+    var map = new google.maps.Map($("#map-canvas")[0],
+      mapOptions);
+
+    var queryString = $('input[name=dest-search]').val();
+
+		alert(queryString);
+
+		function createMarker(loc) {
+			var that = this;
+			var markerLat = loc.geometry.location.lat();
+      var markerLng = loc.geometry.location.lng();
+			var marker = new google.maps.Marker({
+		    position: new google.maps.LatLng(markerLat, markerLng),
+		    map: map,
+		    title: loc.name
+			});
+
+	  	google.maps.event.addListener(marker, 'click', function() {
+
+		    map.setCenter(marker.getPosition());
+		  });
+
+		}
+
 		if (!$('input[name=dest-search]').val()) {
 			alert('please enter a value');
 		} else {
 
 		  var request = {
 		    location: mapOptions['center'],
-		    radius: '1000',
-		    query: 'restaurant'
+		    radius: '2000',
+		    query: queryString
 		  };
 
 		  service = new google.maps.places.PlacesService(map);
-		  service.textSearch(request, function () {
-		  if (status == google.maps.places.PlacesServiceStatus.OK) {
-		    for (var i = 0; i < results.length; i++) {
-		      var place = results[i];
-		      createMarker(results[i]);
-		    }
-		  } else {
-				alert('search query issue');
-		  }
+		  service.textSearch(request, function(results, status) {
+				alert(status);
+			  if (status == google.maps.places.PlacesServiceStatus.OK) {
+			    for (var i = 0; i < results.length; i++) {
+			      var place = results[i];
+						console.log(place);
+			      createMarker(place);
+			    }
+			  } else {
+					alert('search query issue');
+			  }
 		  });
 		}
 	}
