@@ -17,11 +17,10 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		var newEnd = this._parseTime(this.model.get('end_date'));
 		this.model.set('end_date', newEnd);
 		var destination = this.model.get('end_loc');
-		alert(destination)
-		var latLngRes = this.latLng(destination);
-		alert(latLngRes);
-		this.model.set('latLngRes', latLngRes);
-		var renderedContent = this.template({ trip: this.model, latLngRes: latLngRes });
+		alert(destination);
+		this.latLng(destination);
+		alert(this.model.get('latLng'));
+		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
 		// var groups = this.model.get('groups');
 		// var trips = this.model.get('trips');
@@ -82,13 +81,16 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	latLng: function(destination) {
 		var that = this;
 		geo = new google.maps.Geocoder();
-		alert('in latLng');
+		alert('in latLng' + " " + "dest: " + destination);
 		geo.geocode({
 			'address': destination
 		}, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-			  that.model.set('latLng', results[0].geometry.location);
-
+				console.log("here are the results: ");
+				console.log(results[0].geometry.location.lat());
+			  that.model.set('latLng', [results[0].geometry.location.lat(),
+					results[0].geometry.location.lng()]);
+					console.log(that.model.get('latLng'));
 			} else {
 				alert('not ok');
 			}

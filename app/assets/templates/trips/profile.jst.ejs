@@ -1,3 +1,16 @@
+<script type="text/javascript">
+  function initialize() {
+
+    var mapOptions = {
+      center: new google.maps.LatLng(-50.000, 100.000),
+      zoom: 8
+    };
+		alert(mapOptions['center']);
+    var map = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+  }
+	_.defer(initialize);
+</script>
 
 <div class="col-xs-12">
 	<div class="row">
@@ -19,20 +32,9 @@
 	</div>
 	<br>
 	<br>
-	<div class="col-xs-10 col-xs-offset-2 trip-details" data-loc="<%= trip.escape('end_loc') %>">
+	<div class="col-xs-10 col-xs-offset-2 trip-details" data-loc="<%= trip.escape('latLng') %>">
 		<h4><a href='#'><strong>Trip Details</strong></a></h4>
 		 <div id="map-canvas"></div>
 	</div>
 </div>
 
-<script type="text/javascript">
-  function initialize() {
-    var mapOptions = {
-      center: new google.maps.LatLng($('div.trip-details').attr('data-loc')),
-      zoom: 8
-    };
-    var map = new google.maps.Map(document.getElementById("map-canvas"),
-        mapOptions);
-  }
-	_.defer(initialize);
-</script>
