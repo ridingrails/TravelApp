@@ -7,8 +7,8 @@ TravelApp.Views.UserProfile = Backbone.View.extend({
 	},
 
 	events: {
-		'click #new_group': 'newGroup',
-		'click #new_trip': 'newTrip',
+		'click #new-group': 'newGroup',
+		'click #new-trip': 'newTrip',
 	},
 
 	template: JST["users/profile"],
@@ -33,6 +33,11 @@ TravelApp.Views.UserProfile = Backbone.View.extend({
 			that.$('#interests').append(view.render().$el);
 		});
 		return that;
+	},
+
+	newTrip: function(event) {
+		event.preventDefault();
+		TravelApp.mainRouter.navigate('trips/new', { trigger: true });
 	},
 
 	renderSubView: function(view, selector) {

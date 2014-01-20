@@ -37,8 +37,13 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 
 	showTripDetail: function(event) {
 		event.preventDefault();
-		var dataId = $(event.currentTarget).attr('data-id');
-		TravelApp.mainRouter.navigate( 'trips/' + dataId, { trigger:true });
+		alert($.cookie('session_token'));
+		if (!$.cookie('session_token')) {
+			TravelApp.mainRouter.navigate( '', { trigger:true });
+		} else {
+			var dataId = $(event.currentTarget).attr('data-id');
+			TravelApp.mainRouter.navigate( 'trips/' + dataId, { trigger:true });
+		}
 	},
 
 	_mapMonths: function(num) {

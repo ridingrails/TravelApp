@@ -7,13 +7,14 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	  var that = this;
 		var dest = this.model.get('end_loc');
 		this.latLng(dest, function () {
-			console.log("back in init " + that.model.get('lat'));
-		  console.log("back in init " + that.model.get('lng'));
 		});
 	},
 
 	events: {
-		"click button.dest-search": "queryPlaces"
+		"click button.dest-search": function(e) {
+        this.queryPlaces(e);
+        // this.gapiInit(e);
+		}
 	},
 
 	template: JST["trips/profile"],
@@ -140,7 +141,36 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 	},
 
-	queryPlaces: function() {
+	gapiInit: function (event) {
+		var that = this;
+	  googleApiClientReady(function () {
+	  	that.queryVids();
+	  });
+	},
+
+	queryVids: function() {
+		alert('in search outer');
+		// Search for a specified string.
+		var target = $(event.currentTarget);
+		target.attr('disabled',true);
+		var queryString = $('input[name=dest-search]').val();
+	  var request = gapi.client.youtube.search.list({
+	    q: queryString,
+	    part: 'snippet'
+	  });
+
+	  request.execute(function(response) {
+			alert('in search inner');
+	    var str = JSON.stringify(response.result);
+	    $('#search-container').html('<pre>' + str + '</pre>');
+			target.attr('disabled',false);
+	  });
+	},
+
+	queryPlaces: function(event) {
+		event.preventDefault();
+		var target = $(event.currentTarget);
+		target.attr('disabled',true);
 		var that = this;
 		var latitude = this.model.get('lat');
   //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
@@ -156,7 +186,6 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
     var queryString = $('input[name=dest-search]').val();
 
-		alert(queryString);
 
 		function createMarker(loc) {
 			var that = this;
@@ -187,7 +216,6 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 		  service = new google.maps.places.PlacesService(map);
 		  service.textSearch(request, function(results, status) {
-				alert(status);
 			  if (status == google.maps.places.PlacesServiceStatus.OK) {
 			    for (var i = 0; i < results.length; i++) {
 			      var place = results[i];
@@ -197,6 +225,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 			  } else {
 					alert('search query issue');
 			  }
+				target.attr('disabled', false);
 		  });
 		}
 	}

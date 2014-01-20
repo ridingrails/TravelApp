@@ -1,1 +1,35 @@
-<h3>Trip form</h3>
+<form id="new_trip_form" method="post">
+	<div class="col-xs-4 col-xs-offset-4 trip-new">
+	  <div class="row">
+	    <h4>Create Trip</h4>
+	  </div>
+	</div>
+	<br>
+	<br>
+	<div class="col-xs-4 col-xs-offset-4">
+		 <div class="row">
+			  <div class="form-group">
+				  <label for="trip_title" control-label">Title</label>
+				  <input type="text" class="form-control" id="trip_title" name="trip[title]">
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-4 col-xs-offset-4">
+		  <div class="row">
+				<div class="form-group">
+				  <label for="trip_theme" control-label">Theme</label>
+				  <input type="text" class="form-control" id="trip_theme" name="trip[theme]">
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-4 col-xs-offset-4">
+		  <div class="row">
+				<div class="form-group">
+				  <label for="trip_description" control-label">Description</label>
+				  <textarea class="form-control" id="trip_description" name="trip[description]"></textarea>
+				</div>
+			</div>
+		</div>
+</form>
