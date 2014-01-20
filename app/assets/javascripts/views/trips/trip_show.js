@@ -186,6 +186,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
     var queryString = $('input[name=dest-search]').val();
 
+	  service = new google.maps.places.PlacesService(map);
 
 		function createMarker(loc) {
 			var that = this;
@@ -194,11 +195,14 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 			var marker = new google.maps.Marker({
 		    position: new google.maps.LatLng(markerLat, markerLng),
 		    map: map,
-		    title: loc.name
+		    title: loc.name,
+				draggable: true
 			});
 
-	  	google.maps.event.addListener(marker, 'click', function() {
+			var infoWindow = new google.maps.InfoWindow( { content: loc.name });
 
+	  	google.maps.event.addListener(marker, 'click', function() {
+        infoWindow.open(map, marker);
 		    map.setCenter(marker.getPosition());
 		  });
 
@@ -210,23 +214,22 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 		  var request = {
 		    location: mapOptions['center'],
-		    radius: '2000',
+		    radius: '10000',
 		    query: queryString
 		  };
 
-		  service = new google.maps.places.PlacesService(map);
-		  service.textSearch(request, function(results, status) {
-			  if (status == google.maps.places.PlacesServiceStatus.OK) {
-			    for (var i = 0; i < results.length; i++) {
-			      var place = results[i];
-						console.log(place);
-			      createMarker(place);
-			    }
-			  } else {
-					alert('search query issue');
-			  }
-				target.attr('disabled', false);
-		  });
+	  service.textSearch(request, function(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            console.log(place);
+            createMarker(place);
+	      }
+	      } else {
+	        alert('search query issue');
+	      }
+	        target.attr('disabled', false);
+      });
 		}
 	}
 })

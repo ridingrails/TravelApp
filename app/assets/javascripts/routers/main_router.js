@@ -70,7 +70,6 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 		var trip = new TravelApp.Models.Trip({ id: id });
 		trip.fetch({
 			success: function() {
-				console.log(trip.get('title'));
         var tripShow = new TravelApp.Views.TripShow({
 									model: trip });
         that._swapView(tripShow);

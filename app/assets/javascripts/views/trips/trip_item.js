@@ -37,7 +37,7 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 
 	showTripDetail: function(event) {
 		event.preventDefault();
-		alert($.cookie('session_token'));
+		alert('token is ' + $.cookie('session_token'));
 		if (!$.cookie('session_token')) {
 			TravelApp.mainRouter.navigate( '', { trigger:true });
 		} else {

@@ -1,5 +1,5 @@
 class TripsController < ApplicationController
-# before_filter :check_privacy, :except => [:create]
+  # before_filter :check_privacy, :except => [:create]
 
   def create
     @trip = Trip.new(params[:trip])
