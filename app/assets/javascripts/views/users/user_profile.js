@@ -9,7 +9,6 @@ TravelApp.Views.UserProfile = Backbone.View.extend({
 	events: {
 		'click #new_group': 'newGroup',
 		'click #new_trip': 'newTrip',
-		'click #content-item-main' : 'showContentDetail'
 	},
 
 	template: JST["users/profile"],

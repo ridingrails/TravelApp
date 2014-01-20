@@ -13,6 +13,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	},
 
 	events: {
+		"click button.dest-search": "queryPlaces"
 	},
 
 	template: JST["trips/profile"],
@@ -23,7 +24,6 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		var newEnd = this._parseTime(this.model.get('end_date'));
 		this.model.set('end_date', newEnd);
 		var destination = this.model.get('end_loc');
-		alert(destination);
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
 		return this;
@@ -49,7 +49,6 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 	showTripDetail: function(event) {
 		event.preventDefault();
-		alert('in show trip');
 		var dataId = $(event.currentTarget).attr('data-id');
 		TravelApp.mainRouter.navigate( 'trips/' + dataId, { trigger:true });
 	},
@@ -85,45 +84,84 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	latLng: function(destination, callback) {
 		var that = this;
 		geo = new google.maps.Geocoder();
-		alert('in latLng' + " " + "dest: " + destination);
 		geo.geocode({
 			'address': destination
 		}, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				alert("set lat lng");
 
 			  that.model.set('lat', results[0].geometry.location.lat());
 				that.model.set('lng', results[0].geometry.location.lng());
         that.buildMap();
 
-					console.log('variable is ' + that.model.get('lat') + "," + that.model.get('lng'));
-					console.log('variable should be ' + [results[0].geometry.location.lat(),
-					results[0].geometry.location.lng()] );
-					callback();
+				callback();
 			} else {
 				alert('not ok');
+				that.render();
 			}
 		});
 	},
 
 	buildMap: function () {
 		var latitude = this.model.get('lat');
-		alert(latitude); //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
+  //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
 		var longitude = this.model.get('lng');
-		alert(longitude);		//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
+	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
     var mapOptions = {
       center: new google.maps.LatLng(latitude, longitude),
       zoom: 10
     };
-		alert(mapOptions['center']);
 
     var map = new google.maps.Map($("#map-canvas")[0],
-        mapOptions);
+      mapOptions);
 
 		var marker = new google.maps.Marker({
-		    position: mapOptions['center'],
-		    map: map,
-		    title: this.model.get('end_loc')
+	    position: mapOptions['center'],
+	    map: map,
+	    title: this.model.get('end_loc')
 		});
+
+  	google.maps.event.addListener(marker, 'click', function() {
+	    map.setZoom(12);
+	    map.setCenter(marker.getPosition());
+	  });
+
+		var transitLayer = new google.maps.TransitLayer();
+		transitLayer.setMap(map);
+
+		var input = document.getElementById('dest-search');
+
+		var options = {
+		  types: ['establishment']
+		};
+
+	  autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    autocomplete.bindTo('bounds', map);
+
+	},
+
+	queryPlaces: function() {
+		if (!$('input[name=dest-search]').val()) {
+			alert('please enter a value');
+		} else {
+
+		  var request = {
+		    location: mapOptions['center'],
+		    radius: '1000',
+		    query: 'restaurant'
+		  };
+
+		  service = new google.maps.places.PlacesService(map);
+		  service.textSearch(request, function () {
+		  if (status == google.maps.places.PlacesServiceStatus.OK) {
+		    for (var i = 0; i < results.length; i++) {
+		      var place = results[i];
+		      createMarker(results[i]);
+		    }
+		  } else {
+				alert('search query issue');
+		  }
+		  });
+		}
 	}
 })

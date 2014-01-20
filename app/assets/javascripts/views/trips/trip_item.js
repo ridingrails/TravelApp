@@ -37,7 +37,6 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 
 	showTripDetail: function(event) {
 		event.preventDefault();
-		alert('in show trip');
 		var dataId = $(event.currentTarget).attr('data-id');
 		TravelApp.mainRouter.navigate( 'trips/' + dataId, { trigger:true });
 	},
