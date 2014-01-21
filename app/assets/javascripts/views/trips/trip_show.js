@@ -118,13 +118,28 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		var marker = new google.maps.Marker({
 	    position: mapOptions['center'],
 	    map: map,
-	    title: this.model.get('end_loc')
+	    title: this.model.get('end_loc'),
+			panControl: false
 		});
 
   	google.maps.event.addListener(marker, 'click', function() {
 	    map.setZoom(12);
 	    map.setCenter(marker.getPosition());
 	  });
+
+		google.maps.event.addListener(marker, 'dragend', function(event) {
+		  console.debug('final position is '+event.latLng.lat()+' / '+event.latLng.lng());
+			var pos = mapOptions['center'];
+			marker.setPosition(pos);
+		});
+
+		google.maps.event.addListener(marker, 'dragstart', function() {
+      map.set('draggable', false );
+    });
+
+    google.maps.event.addListener(marker, 'dragend', function() {
+      map.set('draggable', true );
+    });
 
 		var transitLayer = new google.maps.TransitLayer();
 		transitLayer.setMap(map);
@@ -196,15 +211,34 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		    position: new google.maps.LatLng(markerLat, markerLng),
 		    map: map,
 		    title: loc.name,
-				draggable: true
+				draggable: true,
+				panControl: false
 			});
 
-			var infoWindow = new google.maps.InfoWindow( { content: loc.name });
+			var infoWindow = new google.maps.InfoWindow( { content: '<p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p>' + '<img src="' + loc.photos[0] + '"' });
+
+			google.maps.event.addListener(marker, 'drag', function(event) {
+			  console.debug('new position is '+event.latLng.lat()+' / '+event.latLng.lng());
+			});
+
+			google.maps.event.addListener(marker, 'dragend', function(event) {
+			  console.debug('final position is '+event.latLng.lat()+' / '+event.latLng.lng());
+				var pos = new google.maps.LatLng(markerLat, markerLng)
+				marker.setPosition(pos);
+			});
 
 	  	google.maps.event.addListener(marker, 'click', function() {
         infoWindow.open(map, marker);
 		    map.setCenter(marker.getPosition());
 		  });
+
+			google.maps.event.addListener(marker, 'dragstart', function() {
+	      map.set('draggable', false );
+	    });
+
+	    google.maps.event.addListener(marker, 'dragend', function() {
+	      map.set('draggable', true );
+	    });
 
 		}
 
