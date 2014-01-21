@@ -153,10 +153,10 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 				marker.setPosition(pos);
 				var coords = [event.latLng.lat(), event.latLng.lng()];
 				var mapBounds = map.getBounds();
-				var ne = mapBounds.getNorthEast().lng();
-				var sw = mapBounds.getSouthWest().lng();
+				var ne = mapBounds.getNorthEast().lat();
+				var sw = mapBounds.getSouthWest().lat();
 
-				if (event.latLng.lng() > ne) {
+				if (event.latLng.lng() < sw) {
 			    var excursion = new TravelApp.Models.Excursion();
 					var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc });
 
@@ -209,9 +209,7 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 		if ($('#trip_destination').val()) {
 			this.latLng($('#trip_destination').val(), function () {
 				$('div#trip-events').addClass('vis-true');
-			  $('div#trip-events').fadeIn( "slow", function() {
-			 	 	alert('in inner fx');
-			  });
+			  $('div#trip-events').fadeIn( "slow");
 			});
 		} else {
 			alert('please enter a value');

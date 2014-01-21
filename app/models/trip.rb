@@ -1,7 +1,7 @@
 class Trip < ActiveRecord::Base
   attr_accessible :planner_id, :title, :theme, :description, :start_date, :end_date, :privacy, :start_loc, :end_loc
 
-  validates_presence_of :planner_id, :title, :theme, :start_date, :privacy, :start_loc
+  validates_presence_of :planner_id, :title, :theme, :start_date, :start_loc
 
   belongs_to(
     :planner,
