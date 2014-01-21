@@ -157,7 +157,10 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 				var sw = mapBounds.getSouthWest().lng();
 
 				if (event.latLng.lng() > ne) {
-					$('.info-area-ul').append('<li>' + infoWindow['content'] + '</li>');
+			    var excursion = new TravelApp.Models.Excursion();
+					var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc });
+
+					$('.info-area-ul').empty().prepend(view.render().$el);
 				} else {
 					alert('not in main clause');
 				}

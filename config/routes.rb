@@ -1,6 +1,8 @@
 TravelApp::Application.routes.draw do
   resources :users, :only => [:create, :destroy, :show, :update]
-  resources :trips, :only => [:create, :destroy, :show, :update]
+  resources :trips, :only => [:create, :destroy, :show, :update] do
+    resources :excursions, :only => [:create, :destroy, :show, :update]
+  end
   resources :groups, :only => [:create, :destroy, :show, :update]
 
   match '/logout', :to => 'session#destroy'
