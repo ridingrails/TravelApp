@@ -110,7 +110,6 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 
 	queryPlaces: function(event) {
 		event.preventDefault();
-		alert('in query places');
 		var target = $(event.currentTarget);
 		var the = this;
 		var latitude = this.model.get('lat');
@@ -142,7 +141,7 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 				draggable: true
 			});
 
-			var infoWindow = new google.maps.InfoWindow( { content: '<p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p>'});
+			var infoWindow = new google.maps.InfoWindow( { content: '<div><p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p><img src="' + loc.icon + '"></div>'});
 
 			google.maps.event.addListener(marker, 'drag', function(event) {
 			  // console.debug('new position is '+event.latLng.lat()+' / '+event.latLng.lng());
@@ -158,7 +157,7 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 				var sw = mapBounds.getSouthWest().lng();
 
 				if (event.latLng.lng() > ne) {
-					$('.info-area-ul').append('<li>' + marker['title'] + '</li>');
+					$('.info-area-ul').append('<li>' + infoWindow['content'] + '</li>');
 				} else {
 					alert('not in main clause');
 				}
