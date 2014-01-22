@@ -2,6 +2,7 @@ class TripsController < ApplicationController
   # before_filter :check_privacy, :except => [:create]
 
   def create
+    params[:trip][:start_loc].capitalize!
     @trip = Trip.new(params[:trip])
     if @trip.save!
       render :json => @trip

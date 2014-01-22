@@ -5,16 +5,13 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	//     // bind to window
 	//     $(window).scroll(this.detect_scroll);
 	  var that = this;
-		var dest = this.model.get('end_loc');
+		var dest = this.model.get('start_loc');
 		this.latLng(dest, function () {
 		});
 	},
 
 	events: {
-		"click button.dest-search": function(e) {
-        this.queryPlaces(e);
-        // this.gapiInit(e);
-		}
+		'click button.dest-search' : 'queryPlaces'
 	},
 
 	template: JST["trips/profile"],
@@ -46,12 +43,6 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		// 	var view = new TravelApp.Views.InterestItem({ model: interest });
 		// 	that.$('#interests').append(view.render().$el);
 		// });
-	},
-
-	showTripDetail: function(event) {
-		event.preventDefault();
-		var dataId = $(event.currentTarget).attr('data-id');
-		TravelApp.mainRouter.navigate( 'trips/' + dataId, { trigger:true });
 	},
 
 	_parseTime: function(time) {
@@ -93,8 +84,8 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 			  that.model.set('lat', results[0].geometry.location.lat());
 				that.model.set('lng', results[0].geometry.location.lng());
         that.buildMap();
-
 				callback();
+
 			} else {
 				alert('not ok');
 				that.render();
@@ -156,37 +147,19 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 	},
 
-	gapiInit: function (event) {
+	excursionView: function(loc) {
 		var that = this;
-	  googleApiClientReady(function () {
-	  	that.queryVids();
-	  });
-	},
-
-	queryVids: function() {
-		alert('in search outer');
-		// Search for a specified string.
-		var target = $(event.currentTarget);
-		target.attr('disabled',true);
-		var queryString = $('input[name=dest-search]').val();
-	  var request = gapi.client.youtube.search.list({
-	    q: queryString,
-	    part: 'snippet'
-	  });
-
-	  request.execute(function(response) {
-			alert('in search inner');
-	    var str = JSON.stringify(response.result);
-	    $('#search-container').html('<pre>' + str + '</pre>');
-			target.attr('disabled',false);
-	  });
+	  var excursion = new TravelApp.Models.Excursion();
+		var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc, trip: that.model });
+		return view;
 	},
 
 	queryPlaces: function(event) {
 		event.preventDefault();
 		var target = $(event.currentTarget);
-		target.attr('disabled',true);
-		var that = this;
+		var excursionView = this.excursionView;
+		var the = this;
+		var thisTrip = the.model;
 		var latitude = this.model.get('lat');
   //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
 		var longitude = this.model.get('lng');
@@ -203,7 +176,9 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 	  service = new google.maps.places.PlacesService(map);
 
-		function createMarker(loc) {
+		function createMarker(loc, context) {
+			console.log(loc);
+
 			var that = this;
 			var markerLat = loc.geometry.location.lat();
       var markerLng = loc.geometry.location.lng();
@@ -211,20 +186,34 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		    position: new google.maps.LatLng(markerLat, markerLng),
 		    map: map,
 		    title: loc.name,
-				draggable: true,
-				panControl: false
+				draggable: true
 			});
 
-			var infoWindow = new google.maps.InfoWindow( { content: '<p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p>' + '<img src="' + loc.photos[0] + '"' });
+			var infoWindow = new google.maps.InfoWindow( { content: '<div><p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p><img src="' + loc.icon + '"></div>'});
 
 			google.maps.event.addListener(marker, 'drag', function(event) {
-			  console.debug('new position is '+event.latLng.lat()+' / '+event.latLng.lng());
+			  // console.debug('new position is '+event.latLng.lat()+' / '+event.latLng.lng());
 			});
 
 			google.maps.event.addListener(marker, 'dragend', function(event) {
-			  console.debug('final position is '+event.latLng.lat()+' / '+event.latLng.lng());
+			  // console.debug('final position is '+event.latLng.lat()+' / '+event.latLng.lng());
 				var pos = new google.maps.LatLng(markerLat, markerLng)
 				marker.setPosition(pos);
+				var coords = [event.latLng.lat(), event.latLng.lng()];
+				var mapBounds = map.getBounds();
+				var ne = mapBounds.getNorthEast().lng();
+				var sw = mapBounds.getSouthWest().lng();
+				alert(ne + " " + event.latLng.lng());
+
+				if (event.latLng.lng() > ne) {
+					var exView = context.excursionView(loc);
+					// var excursion = new TravelApp.Models.Excursion();
+					// var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc, trip: this.model });
+
+					$('.info-area-ul').empty().prepend(exView.render().$el);
+				} else {
+					alert('not in main clause');
+				}
 			});
 
 	  	google.maps.event.addListener(marker, 'click', function() {
@@ -232,13 +221,12 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		    map.setCenter(marker.getPosition());
 		  });
 
-			google.maps.event.addListener(marker, 'dragstart', function() {
-	      map.set('draggable', false );
-	    });
-
-	    google.maps.event.addListener(marker, 'dragend', function() {
-	      map.set('draggable', true );
-	    });
+			google.maps.event.addListener(marker, 'dragstart', function(){
+			    map.set('draggable', false);
+			});
+			google.maps.event.addListener(marker, 'dragend', function(){
+			    map.set('draggable', true);
+			});
 
 		}
 
@@ -252,17 +240,16 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		    query: queryString
 		  };
 
-	  service.textSearch(request, function(results, status) {
+	    service.textSearch(request, function(results, status) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
             var place = results[i];
             console.log(place);
-            createMarker(place);
+            createMarker(place, the);
 	      }
 	      } else {
 	        alert('search query issue');
 	      }
-	        target.attr('disabled', false);
       });
 		}
 	}

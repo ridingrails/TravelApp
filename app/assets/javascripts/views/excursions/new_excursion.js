@@ -2,6 +2,7 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 
 	initialize: function(options) {
 		this.info = options.info;
+		this.trip = options.trip;
 	},
 
 	events: {
@@ -13,7 +14,7 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 	timeTemplate: JST["excursions/time"],
 
 	render: function() {
-		var renderedContent = this.template({ excursion: this.model, info: this.info });
+		var renderedContent = this.template({ excursion: this.model, info: this.info, trip: this.trip });
 		this.$el.html(renderedContent);
 		return this;
 	},
@@ -26,7 +27,6 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 			$(event.currentTarget).removeClass('btn-danger');
 			$(event.currentTarget).addClass('btn-success').text('Add');
 		}
-
 	},
 
 	setTime: function(event) {
@@ -36,17 +36,16 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 	  $('.input-daterange').datepicker({});
 	},
 
-	createExcursion: function(formData, callback) {
+	createExcursion: function(event) {
+		event.preventDefault();
 		var that = this;
 		var formData = $(event.currentTarget).serializeJSON();
-		var tripId = formData
-		var trip = new TravelApp.Models.Trip({});
+		var tripId = this.trip.get('id');
 		var excursion = new TravelApp.Models.User(formData);
 		excursion.save({}, {
 			success: function (resp) {
-				$.cookie("session_token", resp.get("session_token"));
-				TravelApp.mainRouter.navigate('excursions/' + excursion.id, { trigger: true });
-				callback();
+				var view = TravelApp.Views.
+				TravelApp.mainRouter.navigate('trips/' + tripId, { trigger: true });
 			},
 
 			error: function (resp) {
