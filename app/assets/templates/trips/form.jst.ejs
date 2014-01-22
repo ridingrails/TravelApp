@@ -45,41 +45,54 @@
 			</div>
 		</div>
 
+		<div>
+		  <div class="row">
+				<div class="form-group">
+				  <label for="trip_destination control-label">Privacy</label>
+					<select name="trip[privacy]" form="new_trip_form">
+						<option value="public">Public</option>
+						<option value="private">Private</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
 		<div class="date-input">
 		  <div class="row">
 				<div class="input-daterange input-group" id="datepicker">
-					<span class="input-group-addon">from</span>
-				  <input type="date" class="input-sm form-control datepicker" name="trip[start_date]" />
-				    <span class="input-group-addon">to</span>
-				  <input type="date" class="input-sm form-control datepicker" name="trip[end_date]" />
+					<label for="trip-start" class="input-group-addon">from</label>
+				  <input type="date" id="trip-start" class="input-sm form-control datepicker" name="trip[start_date]" />
+				  <label class="input-group-addon">to</label>
+				  <input type="date" id="trip-end" class="input-sm form-control datepicker" name="trip[end_date]" />
 				</div>
 			</div>
 		</div>
 
 		<div>
 		  <div class="row">
-				<button class="btn btn-success add-events">Add Events</button>
+				<input type="submit" class="btn btn-success add-events" value="Create & Add Events">
 			</div>
-		</div>
-
-	</div>
-	<div class="col-xs-7 col-xs-offset-1 trip-details" id="trip-events" data-lat="" data-lng="">
-		<div class="row">
-			<div class="col-xs-8">
-				<input type="text" id="dest-search" name="dest-search">
-			</div>
-			<div class="col-xs-4">
-				<input type="submit" id="new-events" class="btn btn-primary dest-search-submit" value="Find Places">
-			</div>
-		</div>
-		<div id="map-canvas" class="new">
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-offset-2 info-area">
-			<div class="info-area-ul">
-			</div>
-		</div>
-  </div>
-
 </form>
+
+
+<div class="col-xs-7 col-xs-offset-1 trip-details" id="trip-events" data-lat="" data-lng="">
+	<div class="row">
+		<div class="col-xs-8">
+			<input type="text" id="dest-search" name="dest-search">
+		</div>
+		<div class="col-xs-4">
+			<input type="button" id="new-events" class="btn btn-primary dest-search-submit" value="Find Places">
+		</div>
+	</div>
+	<div id="map-canvas" class="new">
+	</div>
+</div>
+<div class="row">
+	<div class="info-area">
+		<div class="info-area-ul">
+		</div>
+	</div>
+</div>
+

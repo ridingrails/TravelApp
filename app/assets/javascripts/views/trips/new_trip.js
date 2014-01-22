@@ -1,8 +1,12 @@
 TravelApp.Views.NewTrip = Backbone.View.extend({
 
+	initialize: function() {
+		this.currentUser = TravelApp.currentUser;
+	},
+
 	events: {
 		'click .dest-search-submit': 'queryPlaces',
-	  'click .add-events': 'createEvents'
+	  'submit #new_trip_form': 'showTrip'
 	},
 
 	template: JST["trips/form"],
@@ -11,24 +15,6 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 		var renderedContent = this.template({ user: this.model });
 		this.$el.html(renderedContent);
 		return this;
-	},
-
-	createTrip: function (event) {
-		console.log("in new trip fx")
-		event.preventDefault();
-		console.log("in createtrip function");
-		var formData = $(event.currentTarget).serializeJSON();
-		var trip = new TravelApp.Models.Trip(formData);
-		trip.save({}, {
-			success: function (resp) {
-				console.log(resp);
-				TravelApp.mainRouter.navigate('trips/' + resp.get('id'), { trigger: true});
-			},
-
-			error: function (resp) {
-				console.log("failed");
-			}
-		});
 	},
 
 	latLng: function(destination, callback) {
@@ -108,10 +94,19 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 	// 	if (marker.map.getBounds() - event.latLng.lat())
 	// },
 
+	excursionView: function(loc) {
+		var that = this;
+	  var excursion = new TravelApp.Models.Excursion();
+		var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc, trip: that.model });
+		return view;
+	},
+
 	queryPlaces: function(event) {
 		event.preventDefault();
 		var target = $(event.currentTarget);
+		var excursionView = this.excursionView;
 		var the = this;
+		var thisTrip = the.model;
 		var latitude = this.model.get('lat');
   //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
 		var longitude = this.model.get('lng');
@@ -128,7 +123,7 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 
 	  service = new google.maps.places.PlacesService(map);
 
-		function createMarker(loc) {
+		function createMarker(loc, trip, viewFx) {
 			console.log(loc);
 
 			var that = this;
@@ -157,8 +152,9 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 				var sw = mapBounds.getSouthWest().lat();
 
 				if (event.latLng.lng() < sw) {
-			    var excursion = new TravelApp.Models.Excursion();
-					var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc });
+					var view = the.viewFx(loc);
+					// 			    var excursion = new TravelApp.Models.Excursion();
+					// var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc, trip: trip });
 
 					$('.info-area-ul').empty().prepend(view.render().$el);
 				} else {
@@ -195,7 +191,7 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
           for (var i = 0; i < results.length; i++) {
             var place = results[i];
             console.log(place);
-            createMarker(place);
+            createMarker(place, thisTrip, excursionView);
 	      }
 	      } else {
 	        alert('search query issue');
@@ -204,15 +200,33 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 		}
 	},
 
-	createEvents: function(event) {
+	showTrip : function(event) {
 		event.preventDefault();
-		if ($('#trip_destination').val()) {
-			this.latLng($('#trip_destination').val(), function () {
-				$('div#trip-events').addClass('vis-true');
-			  $('div#trip-events').fadeIn( "slow");
-			});
-		} else {
-			alert('please enter a value');
-		}
+		var that = this;
+		var formData = $(event.currentTarget).serializeJSON();
+		console.log(formData);
+		console.log(this.currentUser);
+		formData.trip.planner_id = $.cookie('current_user');
+		console.log(formData);
+		var trip = new TravelApp.Models.Trip(formData);
+		trip.save({}, {
+			success: function () {
+				alert('in inner');
+				if ($('#trip_destination').val()) {
+					that.latLng($('#trip_destination').val(), function() {
+						$('div#trip-events').addClass('vis-true');
+					  $('div#trip-events').fadeIn("slow");
+					});
+				} else {
+					alert('please enter a value');
+				}
+			},
+
+			error: function(resp) {
+				alert(resp);
+				//Add to validation div
+				that.render();
+			}
+		});
 	}
 });

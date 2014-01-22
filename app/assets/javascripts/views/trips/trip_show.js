@@ -60,7 +60,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		var day = time.slice(8,10);
 		var hour =
 		   parseInt(time.slice(11,13)) < 12 ? time.slice(11,13) + ":00 AM" : time.slice(11,13) % 12 + ":00 PM";
-	  var res = day + " " + month + " " + year + " " + hour;
+	  var res = day + " " + month + " " + year;
 		return res;
 	},
 

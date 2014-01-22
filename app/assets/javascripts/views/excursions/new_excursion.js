@@ -5,7 +5,7 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 	},
 
 	events: {
-		"click .event-time-submit" : "toggle"
+		"click .event-time-submit" : "createExcursion"
 	},
 
 	template: JST["excursions/new"],
@@ -18,9 +18,7 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 		return this;
 	},
 
-	toggle: function(event) {
-		event.preventDefault();
-		var formData = $(event.currentTarget).serializeJSON();
+	toggle: function() {
 		if ($(event.currentTarget).hasClass('btn-success')) {
 			$(event.currentTarget).removeClass('btn-success');
 			$(event.currentTarget).addClass('btn-danger').text('Remove');
@@ -36,5 +34,26 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 		// var type = $(event.currentTarget).attr('data-type');
 		alert('switching to time view');
 	  $('.input-daterange').datepicker({});
+	},
+
+	createExcursion: function(formData, callback) {
+		var that = this;
+		var formData = $(event.currentTarget).serializeJSON();
+		var tripId = formData
+		var trip = new TravelApp.Models.Trip({});
+		var excursion = new TravelApp.Models.User(formData);
+		excursion.save({}, {
+			success: function (resp) {
+				$.cookie("session_token", resp.get("session_token"));
+				TravelApp.mainRouter.navigate('excursions/' + excursion.id, { trigger: true });
+				callback();
+			},
+
+			error: function (resp) {
+				alert(resp);
+				//Add to validation div
+				that.render();
+			}
+		});
 	}
 })

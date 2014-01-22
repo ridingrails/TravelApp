@@ -23,10 +23,12 @@ TravelApp.Views.NewSession = Backbone.View.extend({
 
     session.save({}, {
       success: function(resp) {
-				var user = new TravelApp.Models.User({
-												id: resp.get('id')
-											});
-		    $.cookie("session_token", resp.get('session_token'));
+				// TravelApp.currentUser = new TravelApp.Models.User(resp);
+				TravelApp.currentUser = resp.attributes;
+				console.log(TravelApp.currentUser);
+				console.log(resp.id);
+		    $.cookie("session_token", resp.session_token);
+		    $.cookie("current_user", resp.id);
 			  TravelApp.mainRouter.navigate('users/' + resp.get('id'),
 							 																{ trigger: true });
       },
