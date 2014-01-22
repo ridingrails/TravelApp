@@ -1,4 +1,4 @@
-<form class="form-horizontal new-excursion" method="post">
+<form class="form-horizontal new-excursion" id="new-excursion" method="post">
 		<div class="col-xs-12">
 				<div class="form-group">
 					<div class="row text-center place-name">
@@ -36,15 +36,12 @@
 							<div class="row">
 							  <label for="excursion_start">Start *</label>
 							  <input type="date" id="excursion_start" class="input-sm form-control datepicker" name="excursion[start]" />
-								<select></select>
+								<!-- <select name="excursion[start_time]" form="new-excursion">
+									<% for (var i = 1; i <= 24; i++) { %>
+								   	<option value="<%= i %>"><%= (i < 12) ? i + " AM" : (i % 12) + " PM" %> :00</option>
+									<% } %>
+								</select> -->
 							</div>
-						</div>
-					</div>
-
-					<div class="row from text-center">
-						<div class="input-daterange input-group text-center" id="event-datepicker1">
-						  <label for="excursion_start">Start *</label>
-						  <input type="date" id="excursion_start" class="input-sm form-control datepicker" name="excursion[start]" />
 						</div>
 					</div>
 
@@ -58,7 +55,6 @@
 
 				<div class="form-group">
 					<div class="row text-center">
-						<input type="hidden" name="excursion[trip_id]" value="<%= trip.get('id') %>">
 						<input type="submit" class="btn btn-success event-time-submit" value="Add">
 					</div>
 				</div>

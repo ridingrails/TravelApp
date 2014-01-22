@@ -6,7 +6,7 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 	},
 
 	events: {
-		"click .event-time-submit" : "createExcursion"
+		"submit #new-excursion" : "createExcursion"
 	},
 
 	template: JST["excursions/new"],
@@ -40,12 +40,15 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 		event.preventDefault();
 		var that = this;
 		var formData = $(event.currentTarget).serializeJSON();
+		console.log(formData)
 		var tripId = this.trip.get('id');
-		var excursion = new TravelApp.Models.User(formData);
+		formData.excursion.trip_id = tripId;
+		formData.excursion.place = this.info.name;
+		var excursion = new TravelApp.Models.Excursion(formData);
 		excursion.save({}, {
 			success: function (resp) {
-				var view = TravelApp.Views.
-				TravelApp.mainRouter.navigate('trips/' + tripId, { trigger: true });
+				alert('in inner excursion');
+				that.render();
 			},
 
 			error: function (resp) {

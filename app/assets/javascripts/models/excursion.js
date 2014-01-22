@@ -1,3 +1,7 @@
 TravelApp.Models.Excursion = Backbone.Model.extend({
-		urlRoot: "/trips/:id/excursions"
+	initialize: function(options) {
+		this.tripId = options.tripId;
+	},
+
+	urlRoot: "/excursions"
 })

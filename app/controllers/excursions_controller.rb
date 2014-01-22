@@ -1,6 +1,6 @@
 class ExcursionsController < ApplicationController
   def create
-    @excursion = Excursion.find(params[:excursion])
+    @excursion = Excursion.new(params[:excursion])
     if @excursion.save
       render :json => @excursion
     else

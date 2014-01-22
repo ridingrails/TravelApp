@@ -149,7 +149,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 	excursionView: function(loc) {
 		var that = this;
-	  var excursion = new TravelApp.Models.Excursion();
+	  var excursion = new TravelApp.Models.Excursion({ tripId: this.model.get('id') });
 		var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc, trip: that.model });
 		return view;
 	},
