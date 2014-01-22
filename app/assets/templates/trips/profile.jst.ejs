@@ -34,10 +34,29 @@
 		<div class="col-xs-4">
 			<div class="info-area">
 				<div class="info-area-ul">
+					<div class="panel-group" id="accordion">
+						<% trip.get('excursions').each(function(excursion) { %>
+					  <div class="panel panel-default">
+					    <div class="panel-heading">
+					      <h4 class="panel-title">
+					        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+					          <%= excursion.escape('title') %>
+					        </a>
+					      </h4>
+					    </div>
+					    <div id="collapseOne" class="panel-collapse collapse in">
+					      <div class="panel-body">
+									<p><%= excursion.escape('place') %></p>
+									<p><%= excursion.escape('start') %></p>
+					      </div>
+					    </div>
+					  </div>
+						<% }); %>
+					</div>
 				</div>
 			</div>
 	  </div>
 	</div>
-	<div col-xs->
+	<div col-xs- >
 </div>
 

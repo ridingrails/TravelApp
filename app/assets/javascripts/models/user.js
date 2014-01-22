@@ -5,7 +5,7 @@ TravelApp.Models.User = Backbone.Model.extend({
 		var groups = data.groups_attended;
 		data.groups = new TravelApp.Collections.Groups(groups);
 		var interests = data.interests;
-		data.interests = new TravelApp.Collections.Interests(groups);
+		data.interests = new TravelApp.Collections.Interests(interests);
 		return data;
 	},
 

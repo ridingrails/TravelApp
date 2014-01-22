@@ -5,7 +5,7 @@ class TripsController < ApplicationController
     params[:trip][:start_loc].capitalize!
     @trip = Trip.new(params[:trip])
     if @trip.save!
-      render :json => @trip
+      render "show"
     else
       render :json => @trip.errors.full_messages,
              :status => :unprocessable_entity
@@ -14,6 +14,6 @@ class TripsController < ApplicationController
 
   def show
     @trip = Trip.find(params[:id])
-    render :json => @trip
+    render "show"
   end
 end
