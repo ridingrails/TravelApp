@@ -66,7 +66,6 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
   },
 
 	showTrip: function(id) {
-		alert('in show trip');
 		var that = this;
 		var trip = new TravelApp.Models.Trip({ id: id });
 		trip.fetch({

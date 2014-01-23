@@ -1,0 +1,20 @@
+
+<div class="panel-group" id="accordion">
+	<% trip.get('excursions').each(function(excursion) { %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="<%= excursion.get('id') %>">
+          <%= excursion.escape('title') %>
+        </a>
+      </h4>
+    </div>
+    <div id="<%= excursion.get('id') %>" class="panel-collapse collapse in">
+      <div class="panel-body">
+				<p><%= excursion.escape('place') %></p>
+				<p><%= excursion.escape('start') %></p>
+      </div>
+    </div>
+  </div>
+	<% }); %>
+</div>

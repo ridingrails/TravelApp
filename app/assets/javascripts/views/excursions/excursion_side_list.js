@@ -1,6 +1,15 @@
-TravelApp.Views.ExcursionSideItem = Backbone.View.extend({
+TravelApp.Views.ExcursionSideList = Backbone.View.extend({
 
-	template: JST["excursions/"],
+	initialize: function(options) {
+		this.trip = options.trip;
+	},
 
+	template: JST["excursions/side_list"],
+
+	render: function() {
+		var renderedContent = this.template({ trip: trip })
+		this.$el.html(renderedContent);
+		return this;
+	}
 
 })

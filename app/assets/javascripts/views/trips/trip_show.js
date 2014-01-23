@@ -1,9 +1,6 @@
 TravelApp.Views.TripShow = Backbone.View.extend({
 
 	initialize: function() {
-	//     _.bindAll(this, 'detect_scroll');
-	//     // bind to window
-	//     $(window).scroll(this.detect_scroll);
 	  var that = this;
 		var dest = this.model.get('start_loc');
 		this.latLng(dest, function () {
@@ -22,28 +19,11 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		this.model.set('start_date', newStart);
 		var newEnd = this._parseTime(this.model.get('end_date'));
 		this.model.set('end_date', newEnd);
-		var destination = this.model.get('end_loc');
+ 		var destination = this.model.get('end_loc');
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
+		this._installSideList;
 		return this;
-		// var groups = this.model.get('groups');
-		// var trips = this.model.get('trips');
-		// var interests = this.model.get('interests');
-		// var renderedContent = this.template({ user: this.model });
-		// this.$el.html(renderedContent);
-		// var that = this;
-		// groups.each(function(group) {
-		// 	var view = new TravelApp.Views.GroupItem({ model: group });
-		// 	    that.$('#groups').append(view.render().$el);
-		// });
-		// trips.each(function(trip) {
-		// 	var view = new TravelApp.Views.TripItem({ model: trip });
-		// 	that.$('#trips').append(view.render().$el);
-		// });
-		// interests.each(function(interest) {
-		// 	var view = new TravelApp.Views.InterestItem({ model: interest });
-		// 	that.$('#interests').append(view.render().$el);
-		// });
 	},
 
 	_parseTime: function(time) {
@@ -54,6 +34,14 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		   parseInt(time.slice(11,13)) < 12 ? time.slice(11,13) + ":00 AM" : time.slice(11,13) % 12 + ":00 PM";
 	  var res = day + " " + month + " " + year;
 		return res;
+	},
+
+	_installSideList: function() {
+		alert('in side list');
+		var sideListView = new TravelApp.Views.ExcursionSideList({
+			trip: this.model
+		});
+		$('.info-area-ul').html(sideListView.render().$el);
 	},
 
 	_mapMonths: function(num) {
@@ -204,7 +192,6 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 				var mapBounds = map.getBounds();
 				var ne = mapBounds.getNorthEast().lng();
 				var sw = mapBounds.getSouthWest().lng();
-				alert(ne + " " + event.latLng.lng());
 
 				if (event.latLng.lng() > ne) {
 					var exView = context.excursionView(loc);

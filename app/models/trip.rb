@@ -1,4 +1,6 @@
 class Trip < ActiveRecord::Base
+  before_save :location_case
+
   attr_accessible :planner_id, :title, :theme, :description, :start_date, :end_date, :privacy, :start_loc, :end_loc
 
   validates_presence_of :planner_id, :title, :theme, :start_date, :start_loc
@@ -25,4 +27,9 @@ class Trip < ActiveRecord::Base
   )
 
   has_many :excursions
+
+  def location_case
+    self.start_loc.capitalize!
+    self.end_loc.capitalize! if self.end_loc
+  end
 end

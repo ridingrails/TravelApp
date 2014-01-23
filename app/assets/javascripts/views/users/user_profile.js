@@ -13,7 +13,7 @@ TravelApp.Views.UserProfile = Backbone.View.extend({
 
 	template: JST["users/profile"],
 
-	render: function () {
+	render: function() {
 		var groups = this.model.get('groups');
 		var trips = this.model.get('trips');
 		var interests = this.model.get('interests');
@@ -40,8 +40,8 @@ TravelApp.Views.UserProfile = Backbone.View.extend({
 		TravelApp.mainRouter.navigate('trips/new', { trigger: true });
 	},
 
-	renderSubView: function(view, selector) {
-		alert('about to render sub view');
-		selector.append(view.render().$el);
+	newGroup: function(event) {
+		event.preventDefault();
+		TravelApp.mainRouter.navigate('groups/new', { trigger: true });
 	}
 })
