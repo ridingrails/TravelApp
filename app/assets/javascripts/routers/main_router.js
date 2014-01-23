@@ -12,7 +12,10 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 	  "users/:id": "showUser",
 		"trips/new": "newTrip",
 		"trips/:id": "showTrip",
+		"trips": "tripIndex",
+		"groups/new": "newGroup",
 		"groups/:id": "showGroup",
+	  "groups": "groupIndex",
 		"login": "newSession",
 		"logout": "signOut"
 	},
@@ -65,6 +68,16 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
     }
   },
 
+  newGroup: function() {
+    if(!$.cookie('session_token')) {
+      TravelApp.mainRouter.navigate('', {trigger: true});
+    } else {
+      var group = new TravelApp.Models.Group();
+      var newGroupView = new TravelApp.Views.NewGroup({ model: group });
+      this._swapView(newGroupView);
+    }
+  },
+
 	showTrip: function(id) {
 		var that = this;
 		var trip = new TravelApp.Models.Trip({ id: id });
@@ -74,6 +87,21 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 									model: trip });
         that._swapView(tripShow);
 				that._installHeader();
+			}
+		})
+	},
+
+	tripIndex: function() {
+		var that = this;
+		var trips = new TravelApp.Collections.Trips;
+		trips.fetch({
+			success: function() {
+				var tripIndexView = new TravelApp.Views.TripIndex({ collection: trips });
+				that._swapView(tripIndexView);
+			},
+
+			error: function() {
+				alert('index not fetched');
 			}
 		})
 	},
@@ -88,6 +116,21 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 									model: group });
         that._swapView(groupShow);
 				that._installHeader();
+			}
+		})
+	},
+
+	groupIndex: function() {
+		var that = this;
+		var groups = new TravelApp.Collections.Groups;
+		groups.fetch({
+			success: function(resp) {
+				var groupIndexView = new TravelApp.Views.GroupIndex({ collection: groups });
+				that._swapView(groupIndexView);
+			},
+
+			error: function() {
+				alert('index not fetched');
 			}
 		})
 	},

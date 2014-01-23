@@ -72,19 +72,20 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 		return view;
 	},
 
-	saveTrip : function(event) {
+	saveTrip: function(event) {
 		event.preventDefault();
 		var that = this;
 		var formData = $(event.currentTarget).serializeJSON();
 		console.log(formData);
 		console.log(this.currentUser);
-		formData.trip.planner_id = $.cookie('current_user');
+		formData.trip.planner_id = TravelApp.currentUser.get('id');
 		console.log(formData);
 		var trip = new TravelApp.Models.Trip(formData);
 		trip.save({}, {
 			success: function (resp) {
 				alert('saving trip');
-				TravelApp.mainRouter.navigate('trips/' + resp.get('id'), { trigger:true });
+				alert(resp.attributes.id);
+				TravelApp.mainRouter.navigate('trips/' + resp.attributes.id, { trigger:true });
 			},
 
 			error: function(resp) {

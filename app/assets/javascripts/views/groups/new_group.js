@@ -7,7 +7,7 @@ TravelApp.Views.NewGroup = Backbone.View.extend({
 	template: JST["groups/form"],
 
 	render: function () {
-		var renderedContent = this.template({ user: this.model });
+		var renderedContent = this.template({ group: this.model });
 		this.$el.html(renderedContent);
 		return this;
 	},
@@ -15,8 +15,11 @@ TravelApp.Views.NewGroup = Backbone.View.extend({
 	createGroup: function (event) {
 		console.log("in new group fx")
 		event.preventDefault();
-		console.log("in createGroup function");
+		alert("in createGroup function");
 		var formData = $(event.currentTarget).serializeJSON();
+		console.log(formData);
+		formData.group.creator_id = $.cookie('current_user');
+		console.log(formData);
 		var group = new TravelApp.Models.Group(formData);
 		group.save({}, {
 			success: function (resp) {

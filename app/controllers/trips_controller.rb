@@ -1,6 +1,11 @@
 class TripsController < ApplicationController
   # before_filter :check_privacy, :except => [:create]
 
+  def index
+    @trips = Trip.all
+    render :json => @trips
+  end
+
   def create
     params[:trip][:start_loc].capitalize!
     @trip = Trip.new(params[:trip])

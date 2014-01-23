@@ -9,7 +9,8 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 	// },
 
 	events: {
-		'click #content-item-main' : 'showTripDetail'
+		'click #content-item-main' : 'showTripDetail',
+		'click .join' : 'join'
 	},
 
 	template: JST["trips/item"],
@@ -23,6 +24,32 @@ TravelApp.Views.TripItem = Backbone.View.extend({
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
 		return this;
+	},
+
+	join: function(event) {
+		event.preventDefault();
+    var tripId = this.model.get('id');
+		var userId = TravelApp.currentUser.get('id');
+    var data = {
+    	reservation: {}
+    };
+
+		data.reservation.attendee_id = userId;
+		data.reservation.trip_id = tripId;
+		alert('saving reservation');
+		var reservation = new TravelApp.Models.Reservation(data);
+    reservation.save({}, {
+      success: function(resp) {
+				console.log(TravelApp.currentUser);
+				console.log(TravelApp.currentUser.session_token);
+			  TravelApp.mainRouter.navigate('users/' + resp.id,
+							 																{ trigger: true });
+      },
+
+      error: function(resp) {
+        window.alert("failed")
+      }
+    });
 	},
 
 	_parseTime: function(time) {

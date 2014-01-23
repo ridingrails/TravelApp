@@ -2,7 +2,9 @@ TravelApp.Views.TopNavbar = Backbone.View.extend({
 
 	events: {
 		'click #sign_out' : 'signOut',
-		'click #profile' : 'profile'
+		'click #profile' : 'profile',
+  	'click #groups' : 'groupIndex',
+		'click #trips' : 'tripIndex'
 	},
 
 	template: JST["layout/top_navbar"],
@@ -22,8 +24,17 @@ TravelApp.Views.TopNavbar = Backbone.View.extend({
 		event.preventDefault();
 		var userId = TravelApp.currentUser.id;
 	  TravelApp.mainRouter.navigate('/users/' + userId, { trigger: true });
-	}
+	},
 
+	groupIndex: function(event) {
+		event.preventDefault();
+	  TravelApp.mainRouter.navigate('/groups', { trigger: true });
+	},
+
+	tripIndex: function(event) {
+		event.preventDefault();
+	  TravelApp.mainRouter.navigate('/trips', { trigger: true });
+	}
 	// dashboard: function() {
 	// 	var user =
 	//   TravelApp.mainRouter.navigate('', { trigger: true });

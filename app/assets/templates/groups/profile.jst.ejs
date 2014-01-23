@@ -1,4 +1,4 @@
-<div class="col-xs-12 trip-show">
+<div class="col-xs-12 group-show">
 	<div class="panel panel-default">
 	  <div class="panel-body">
 			<div class="row">
@@ -18,19 +18,18 @@
 			<div class="info-area">
 				<div class="info-area-ul">
 					<div class="panel-group" id="accordion">
-						<% trip.get('excursions').each(function(excursion) { %>
+						<% group.get('members').each(function(member) { %>
 					  <div class="panel panel-default">
 					    <div class="panel-heading">
 					      <h4 class="panel-title">
-					        <a data-toggle="collapse" data-parent="#accordion" href="<%= excursion.get('id') %>">
-					          <%= excursion.escape('title') %>
+					        <a data-toggle="collapse" data-parent="#accordion" href="<%= member.get('id') %>">
+					          <%= member.escape('email') %>
 					        </a>
 					      </h4>
 					    </div>
-					    <div id="<%= excursion.get('id') %>" class="panel-collapse collapse in">
+					    <div id="<%= member.get('id') %>" class="panel-collapse collapse in">
 					      <div class="panel-body">
-									<p><%= excursion.escape('place') %></p>
-									<p><%= excursion.escape('start') %></p>
+									<p><%= member.escape('name') || "" %></p>
 					      </div>
 					    </div>
 					  </div>
