@@ -25,9 +25,7 @@ TravelApp.Views.GroupIndex = Backbone.View.extend({
 		var membership = new TravelApp.Models.Membership(data);
     membership.save({}, {
       success: function(resp) {
-				console.log(TravelApp.currentUser);
-				console.log(TravelApp.currentUser.session_token);
-			  TravelApp.mainRouter.navigate('users/' + resp.id,
+			  TravelApp.mainRouter.navigate('/groups',
 							 																{ trigger: true });
       },
 

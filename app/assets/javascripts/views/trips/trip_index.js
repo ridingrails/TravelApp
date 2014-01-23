@@ -11,7 +11,7 @@ TravelApp.Views.TripIndex = Backbone.View.extend({
 		return this;
 	},
 
-	join: function() {
+	join: function(event) {
 		event.preventDefault();
     var tripId = $(event.currentTarget).attr('data-id');
 		console.log(tripId);
@@ -22,13 +22,12 @@ TravelApp.Views.TripIndex = Backbone.View.extend({
 
 		data.reservation.attendee_id = userId;
 		data.reservation.trip_id = tripId;
-		alert('saving reservation');
+		alert('trip id is ' + tripId);
 		var reservation = new TravelApp.Models.Reservation(data);
     reservation.save({}, {
       success: function(resp) {
-				console.log(TravelApp.currentUser);
-				console.log(TravelApp.currentUser.session_token);
-			  TravelApp.mainRouter.navigate('users/' + resp.id,
+				console.log(resp);
+			  TravelApp.mainRouter.navigate('/trips' + resp.attributes.trip_id,
 							 																{ trigger: true });
       },
 
