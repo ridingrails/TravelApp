@@ -108,8 +108,6 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
    //    });
 		that.model.save({}, {
 			success: function (resp) {
-				alert('saving trip');
-				alert(resp.attributes.id);
 				TravelApp.mainRouter.navigate('trips/' + resp.attributes.id, { trigger:true });
 			},
 
