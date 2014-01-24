@@ -6,7 +6,6 @@ TravelApp.Views.TripIndex = Backbone.View.extend({
 	template: JST["trips/trip_index"],
 
 	render: function() {
-		alert('rendering')
 		var that = this;
 		var renderedContent = that.template({ trips: that.collection })
 		this.$el.html(renderedContent);

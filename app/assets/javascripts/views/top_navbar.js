@@ -22,7 +22,7 @@ TravelApp.Views.TopNavbar = Backbone.View.extend({
 
 	profile: function(event) {
 		event.preventDefault();
-		var userId = TravelApp.currentUser.id;
+		var userId = 19;
 	  TravelApp.mainRouter.navigate('/users/' + userId, { trigger: true });
 	},
 
