@@ -11,5 +11,7 @@ else
 
   json.trips @user.trips
 
+  json.trips_planned @user.trips_planned
+
   json.interests @user.interests
 end

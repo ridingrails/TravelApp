@@ -1,4 +1,4 @@
-<div class="col-xs-12 group" data-id="<%= group.get('id') %>" id="content-item-main">
+<div class="col-xs-12 group" id="content-item-main">
 	<div class="col-xs-2 image">
 		<img src="<%= group.get('group_photo') %>">
 	</div>
@@ -10,6 +10,7 @@
 			<p><%= group.escape('theme') %></p>
 		</div>
 		<div class="col-xs-2 content">
+			<button data-id="<%= group.get('id') %>" class="btn btn-primary btn-lg action join">Join</button>
 		</div>
 	</div>
 </div>

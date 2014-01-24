@@ -2,6 +2,8 @@ TravelApp.Models.User = Backbone.Model.extend({
 	parse: function(data) {
 		var trips = data.trips;
 		data.trips = new TravelApp.Collections.Trips(trips);
+		var trips_planned = data.trips_planned;
+		data.trips_planned = new TravelApp.Collections.TripsPlanned(trips);
 		var groups = data.groups_attended;
 		data.groups = new TravelApp.Collections.Groups(groups);
 		var interests = data.interests;

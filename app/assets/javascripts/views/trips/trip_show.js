@@ -178,7 +178,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 				draggable: true
 			});
 
-			var infoWindow = new google.maps.InfoWindow( { content: '<div><p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p><img src="' + loc.icon + '"></div>'});
+			var infoWindow = new google.maps.InfoWindow( { content: '<div><p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p><p></p</div><div class="lat">' + markerLat + '</div><div class="lng">' + markerLng + '</div>'});
 
 			google.maps.event.addListener(marker, 'drag', function(event) {
 			  // console.debug('new position is '+event.latLng.lat()+' / '+event.latLng.lng());

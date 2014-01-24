@@ -12,6 +12,7 @@ TravelApp.Views.TripIndex = Backbone.View.extend({
 		this.$el.html(renderedContent);
 		var trips = that.collection;
 		trips.each(function(trip) {
+			console.log(trip);
 			var view = new TravelApp.Views.TripIndexItem({ model: trip });
 			that.$el.append(view.render().$el);
 		});

@@ -5,6 +5,7 @@ TravelApp.Models.Trip = Backbone.Model.extend({
 		var attendees = data.attendees;
 		data.attendees = new TravelApp.Collections.Users(attendees);
 		return data;
+
 	},
 
 	initialize: function() {

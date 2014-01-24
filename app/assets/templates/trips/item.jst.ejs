@@ -1,6 +1,6 @@
 <div class="col-xs-12 trip" data-id="<%= trip.get('id') %>" id="content-item-main">
 	<div class="col-xs-2 image">
-		<img src="<%= trip.get('trip_photo_s') %>">
+		<img src=<%= trip.get('trip_photo') %> >
 	</div>
 	<div class="col-xs-8">
 		<div class="col-xs-10 col-xs-offset-2 content">
@@ -9,7 +9,7 @@
 		<div class="col-xs-8 col-xs-offset-2 content">
 			<p><%= trip.escape('theme') %></p>
 			<p>From <%= trip.escape('start_date') %> To <%= trip.escape('end_date') %></p>
-			<p>Destination: <%= trip.escape('end_loc') %></p>
+			<p>Destination: <%= trip.escape('start_loc') %></p>
 		</div>
 		<div class="col-xs-2 content">
 		</div>

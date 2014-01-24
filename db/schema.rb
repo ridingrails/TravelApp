@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140124045250) do
+ActiveRecord::Schema.define(:version => 20140124100743) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -34,16 +34,22 @@ ActiveRecord::Schema.define(:version => 20140124045250) do
     t.integer  "start_time"
     t.integer  "end_time"
     t.string   "title"
+    t.decimal  "latitude"
+    t.decimal  "longitude"
   end
 
   create_table "groups", :force => true do |t|
-    t.integer  "creator_id",  :null => false
-    t.string   "title",       :null => false
+    t.integer  "creator_id",               :null => false
+    t.string   "title",                    :null => false
     t.text     "description"
-    t.string   "theme",       :null => false
-    t.string   "privacy",     :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string   "theme",                    :null => false
+    t.string   "privacy",                  :null => false
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "group_photo_file_name"
+    t.string   "group_photo_content_type"
+    t.integer  "group_photo_file_size"
+    t.datetime "group_photo_updated_at"
   end
 
   create_table "interests", :force => true do |t|

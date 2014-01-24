@@ -18,6 +18,15 @@
 					<div class="row excursion">
 						<label for="excursion_title">Title</label>
 					</div>
+					<div class="lat">
+						<input type="hidden" value="<%= info.geometry.location.lat() %>" name="excursion[latitude]">
+					</div>
+					<div class="lng">
+						<input type="hidden" value="<%= info.geometry.location.lng() %>" name="excursion[longitude]">
+					</div>
+					<div class="lng">
+						<p><%= info.geometry.location.lng() %></p>
+					</div>
 					<div class="row excursion">
 						<input type="text" id="excursion_title" class="excursion-title" name="excursion[title]">
 					</div>
