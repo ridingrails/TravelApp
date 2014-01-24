@@ -12,5 +12,14 @@ TravelApp.Models.Trip = Backbone.Model.extend({
 		this.lng = null;
 	},
 
+
+	toJSON: function() {
+		var data = _.clone(this.attributes);
+		var photo = data.trip_photo;
+		data.trip.trip_photo = photo;
+		delete data.trip_photo;
+		return data;
+	},
+
 	urlRoot: "/trips"
 })

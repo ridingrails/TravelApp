@@ -5,7 +5,7 @@
 	  </div>
 	</div>
 </div>
-<form id="new_trip_form" method="post">
+<form id="new_trip_form" method="post" enctype="multipart/form-data">
 	<div class="col-xs-4 trip-new">
 	<br>
 	<br>
@@ -41,6 +41,15 @@
 				<div class="form-group">
 				  <label for="trip_destination control-label">Destination</label>
 					<input type="text" class="form-control" id="trip_destination" name="trip[start_loc]">
+				</div>
+			</div>
+		</div>
+
+		<div>
+		  <div class="row">
+				<div class="form-group">
+				  <label for="trip_destination control-label">Photo</label>
+					<input type="file" class="form-control" id="trip_destination" name="trip[trip_photo]">
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 TravelApp.Views.NewExcursion = Backbone.View.extend({
 
 	initialize: function(options) {
+		this.listenTo(this.model, "all", this.render);
 		this.info = options.info;
 		this.trip = options.trip;
 	},

@@ -4,9 +4,9 @@ TravelApp::Application.routes.draw do
 
   resources :excursions, :only => [:create, :destroy, :show, :update]
 
-  resources :reservations, :only => [:create, :destroy]
+  resources :reservations, :only => [:index, :create, :destroy]
 
-  resources :memberships, :only => [:create, :destroy]
+  resources :memberships, :only => [:index, :create, :destroy]
 
   resources :groups, :only => [:index, :create, :destroy, :show, :update]
 

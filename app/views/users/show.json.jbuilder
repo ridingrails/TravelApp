@@ -5,6 +5,10 @@ elsif @type == "feed"
 else
   json.groups_attended @user.groups_attended
 
+  json.memberships @user.memberships
+
+  json.reservations @user.reservations
+
   json.trips @user.trips
 
   json.interests @user.interests

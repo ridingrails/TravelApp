@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140122220913) do
+ActiveRecord::Schema.define(:version => 20140124045250) do
 
   create_table "authorizations", :force => true do |t|
     t.string   "provider"
@@ -97,17 +97,21 @@ ActiveRecord::Schema.define(:version => 20140122220913) do
   add_index "trip_upvotes", ["user_id", "trip_id"], :name => "index_trip_upvotes_on_user_id_and_trip_id", :unique => true
 
   create_table "trips", :force => true do |t|
-    t.integer  "planner_id",  :null => false
-    t.string   "title",       :null => false
-    t.string   "theme",       :null => false
+    t.integer  "planner_id",              :null => false
+    t.string   "title",                   :null => false
+    t.string   "theme",                   :null => false
     t.text     "description"
-    t.datetime "start_date",  :null => false
+    t.datetime "start_date",              :null => false
     t.datetime "end_date"
-    t.string   "privacy",     :null => false
-    t.string   "start_loc",   :null => false
+    t.string   "privacy",                 :null => false
+    t.string   "start_loc",               :null => false
     t.string   "end_loc"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+    t.string   "trip_photo_file_name"
+    t.string   "trip_photo_content_type"
+    t.integer  "trip_photo_file_size"
+    t.datetime "trip_photo_updated_at"
   end
 
   create_table "user_interests", :force => true do |t|

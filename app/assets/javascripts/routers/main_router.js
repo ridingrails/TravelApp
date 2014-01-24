@@ -93,7 +93,7 @@ TravelApp.Routers.MainRouter = Backbone.Router.extend({
 
 	tripIndex: function() {
 		var that = this;
-		var trips = new TravelApp.Collections.Trips;
+		var trips = new TravelApp.Collections.Trips({  });
 		trips.fetch({
 			success: function() {
 				var tripIndexView = new TravelApp.Views.TripIndex({ collection: trips });

@@ -18,13 +18,15 @@ TravelApp.Views.GroupIndex = Backbone.View.extend({
     var data = {
     	membership: {}
     };
-
 		data.membership.member_id = userId;
 		data.membership.group_id = groupId;
 		alert('saving membership');
 		var membership = new TravelApp.Models.Membership(data);
     membership.save({}, {
       success: function(resp) {
+				var target = $(event.currentTarget);
+				target.removeClass('.join');
+				target.addClass('.remove');
 			  TravelApp.mainRouter.navigate('/groups',
 							 																{ trigger: true });
       },

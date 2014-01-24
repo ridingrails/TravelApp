@@ -31,6 +31,8 @@ gem 'bootstrap-sass', '~> 3.0.3.0'
 gem 'factory_girl_rails','~> 4.0'
 gem 'faker', '~> 1.2.0'
 gem 'jquery-ui-rails'
+gem 'paperclip'
+gem 'aws-sdk'
 
 gem 'bootstrap-datepicker-rails'
 # To use ActiveModel has_secure_password

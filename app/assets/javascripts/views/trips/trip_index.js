@@ -1,40 +1,25 @@
 TravelApp.Views.TripIndex = Backbone.View.extend({
+	initialize: function() {
+
+	},
+
 	template: JST["trips/trip_index"],
 
-	events:  {
-		'click .join' : 'join'
-	},
-
 	render: function() {
-		var renderedContent = this.template({ trips: this.collection })
+		alert('rendering')
+		var that = this;
+		var renderedContent = that.template({ trips: that.collection })
 		this.$el.html(renderedContent);
-		return this;
+		var trips = that.collection;
+		trips.each(function(trip) {
+			var view = new TravelApp.Views.TripIndexItem({ model: trip });
+			that.$el.append(view.render().$el);
+		});
+		return that;
 	},
 
-	join: function(event) {
-		event.preventDefault();
-    var tripId = $(event.currentTarget).attr('data-id');
-		console.log(tripId);
-		var userId = TravelApp.currentUser.get('id');
-    var data = {
-    	reservation: {}
-    };
-
-		data.reservation.attendee_id = userId;
-		data.reservation.trip_id = tripId;
-		alert('trip id is ' + tripId);
-		var reservation = new TravelApp.Models.Reservation(data);
-    reservation.save({}, {
-      success: function(resp) {
-				console.log(resp);
-			  TravelApp.mainRouter.navigate('/trips' + resp.attributes.trip_id,
-							 																{ trigger: true });
-      },
-
-      error: function(resp) {
-        window.alert("failed")
-      }
-    });
-
+	refresh: function() {
+		var that = this;
+		TravelApp.mainRouter._swapView(that);
 	}
 })

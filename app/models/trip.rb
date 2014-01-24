@@ -1,9 +1,15 @@
 class Trip < ActiveRecord::Base
   before_save :location_case
 
-  attr_accessible :planner_id, :title, :theme, :description, :start_date, :end_date, :privacy, :start_loc, :end_loc
+  attr_accessible :planner_id, :title, :theme, :description, :start_date, :end_date, :privacy, :start_loc, :end_loc, :trip_photo
 
   validates_presence_of :planner_id, :title, :theme, :start_date, :start_loc
+
+  has_attached_file :trip_photo, :styles => {
+       :big => "1180x520#",
+       :med => "240x120#",
+       :small => "120x120#"
+     }
 
   belongs_to(
     :planner,

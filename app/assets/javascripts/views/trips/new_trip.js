@@ -5,7 +5,8 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 	},
 
 	events: {
-	  'submit #new_trip_form': 'saveTrip'
+	  'submit #new_trip_form': 'saveTrip',
+	 "change input[type=file]" : "encodeFile"
 	},
 
 	template: JST["trips/form"],
@@ -15,6 +16,24 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 		this.$el.html(renderedContent);
 		return this;
 	},
+
+  encodeFile: function (event) {
+       var that = this;
+       var file = event.currentTarget.files[0];
+
+       console.log(file);
+
+       var reader = new FileReader();
+       reader.onload = function(e) {
+           console.log(e.target.result);
+           that.model.set({ trip_photo: e.target.result });
+       }
+       reader.onerror = function(stuff) {
+           console.log("error", stuff)
+           console.log (stuff.getMessage())
+       }
+       reader.readAsDataURL(file);
+  },
 
 	latLng: function(destination, callback) {
 		var that = this;
@@ -80,8 +99,14 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 		console.log(this.currentUser);
 		formData.trip.planner_id = TravelApp.currentUser.get('id');
 		console.log(formData);
-		var trip = new TravelApp.Models.Trip(formData);
-		trip.save({}, {
+		that.model.set(formData);
+		console.log(that.model);
+    // TravelApp.trips.add(trip, {
+   //        success: function (attribute) {
+   //            console.log("happy days!");
+   //        },
+   //    });
+		that.model.save({}, {
 			success: function (resp) {
 				alert('saving trip');
 				alert(resp.attributes.id);
