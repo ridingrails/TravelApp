@@ -96,7 +96,7 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 		var that = this;
 		var formData = $(event.currentTarget).serializeJSON();
 		console.log(formData);
-		console.log(Travel.currentUser);
+		console.log(TravelApp.currentUser);
 		// formData.trip.planner_id = TravelApp.currentUser.get('id');
 		console.log(formData);
 		that.model.set(formData);

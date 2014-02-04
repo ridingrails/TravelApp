@@ -3,6 +3,8 @@ class Trip < ActiveRecord::Base
 
   attr_accessible :planner_id, :title, :theme, :description, :start_date, :end_date, :privacy, :start_loc, :end_loc, :trip_photo
 
+  validate :time_constraint
+
   validates_presence_of :planner_id, :title, :theme, :start_date, :start_loc
 
   has_attached_file :trip_photo, :styles => {
@@ -33,6 +35,12 @@ class Trip < ActiveRecord::Base
   )
 
   has_many :excursions
+
+  def time_constraint
+    unless self.start_date <= self.end_date
+      errors.add(:base, "end time must be after start time")
+    end
+  end
 
   def location_case
     self.start_loc.capitalize!

@@ -7,6 +7,7 @@ class TripsController < ApplicationController
   end
 
   def create
+    params[:trip][:planner_id] = current_user.id
     params[:trip][:start_loc].capitalize!
     @trip = Trip.new(params[:trip])
     if @trip.save!

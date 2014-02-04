@@ -59,7 +59,7 @@ TravelApp.Views.TripIndexItem = Backbone.View.extend({
 		console.log(TravelApp.currentUser);
 		var tripId = $(event.currentTarget).attr('data-id');
 		alert($(event.currentTarget).attr('data-id'));
-		var currentId = TravelApp.currentUser.get('id');
+		var currentId = TravelApp.currentUser;
 		var reservation = new TravelApp.Models.Reservation({
 			trip_id: tripId, attendee_id: currentId
 		});
