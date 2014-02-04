@@ -10,7 +10,7 @@
 						<p>Rating: <%= info.rating %></p>
 					</div>
 					<div class="row excursion">
-						<p>Price Level (1-low, 4-high):<%= info.price_level %></p>
+						<p>Price Level (1-low, 4-high): <%= info.price_level %></p>
 					</div>
 					<div class="row excursion">
 						<label for="excursion_title">Title</label>
@@ -28,17 +28,38 @@
 						<input type="text" id="excursion_title" class="excursion-title" name="excursion[title]">
 					</div>
 					<div class="row excursion input-daterange input-group" id="event-datepicker1">
-					  <label for="excursion_start">Start *</label>
+					  <label for="excursion_start">Start*</label>
 					  <input type="date" id="excursion_start" class="input-sm form-control datepicker" name="excursion[start]" />
-						<!-- <select name="excursion[start_time]" form="new-excursion">
-							<% for (var i = 1; i <= 24; i++) { %>
-						   	<option value="<%= i %>"><%= (i < 12) ? i + " AM" : (i % 12) + " PM" %> :00</option>
+						<select class="time1" name="excursion[start_time]" form="new-excursion">
+							<% for (var i = 0; i < 24; i++) { %>
+						   	<option value="<%= i %>">
+								<% if (i === 0) { %>
+									<%= (i + 12) + ":00 AM" %>
+								<% } else if (i >= 12) { %>
+									<%= (i % 12) + ":00 PM" %>
+								<% } else { %>
+									<%= i + ":00 AM" %>
+								<% } %>
+								 </option>
 							<% } %>
-						</select> -->
+						</select>
 					</div>
 					<div class="row excursion to input-daterange input-group" id="event-datepicker2">
-					  <label for="excursion_end">End</label>
+					  <label for="excursion_end">End  </label>
 					  <input type="date" id="excursion_end" class="input-sm form-control datepicker" name="excursion[end]" />
+						<select class="time2" name="excursion[end_time]" form="new-excursion">
+							<% for (var i = 0; i < 24; i++) { %>
+						   	<option value="<%= i %>">
+								<% if (i === 0) { %>
+									<%= (i + 12) + ":00 AM" %>
+								<% } else if (i >= 12) { %>
+									<%= (i - 12) + ":00 PM" %>
+								<% } else { %>
+									<%= i + ":00 AM" %>
+								<% } %>
+								 </option>
+							<% } %>
+						</select>
 					</div>
 					<div class="row excursion submit-button">
 						<input type="submit" class="btn btn-success event-time-submit" value="Add">

@@ -9,7 +9,7 @@ class Trip < ActiveRecord::Base
 
   has_attached_file :trip_photo, :styles => {
        :big => "1180x520#",
-       :med => "240x120#",
+       :med => "240x160#",
        :small => "120x120#"
      }
 
