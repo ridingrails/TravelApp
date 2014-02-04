@@ -15,9 +15,9 @@ TravelApp.Models.User = Backbone.Model.extend({
 		return data;
 	},
 
-	toJSON: function() {
-
-	},
+	// toJSON: function() {
+	//
+	// },
 
 	urlRoot: "/users"
 })

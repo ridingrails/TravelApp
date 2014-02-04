@@ -18,9 +18,11 @@ TravelApp.Views.NewUser = Backbone.View.extend({
 
 	createUser: function (event) {
 		event.preventDefault();
+		alert('creating user');
 		var that = this;
 		var formData = $(event.currentTarget).serializeJSON();
 		var user = new TravelApp.Models.User(formData);
+		console.log(user);
 		user.save({}, {
 			success: function (resp) {
 				$.cookie("session_token", resp.get("session_token"));
