@@ -1,7 +1,4 @@
 TravelApp.Views.TripIndex = Backbone.View.extend({
-	initialize: function() {
-
-	},
 
 	template: JST["trips/trip_index"],
 
