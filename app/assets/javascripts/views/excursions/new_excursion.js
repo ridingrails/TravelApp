@@ -48,6 +48,7 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 		excursion.save({}, {
 			success: function (resp) {
 				alert(' ex saved');
+				Backbone.trigger("click div.user-photos", target);
 				var view = new TravelApp.Views.TripShow({
 					trip: this.trip
 				});
