@@ -5,8 +5,8 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 	},
 
 	events: {
-	  'submit #new_trip_form': 'saveTrip',
-	 "change input[type=file]" : "encodeFile"
+	  "submit #new_trip_form": "saveTrip",
+	  "change input[type=file]" : "encodeFile"
 	},
 
 	template: JST["trips/form"],
@@ -18,21 +18,21 @@ TravelApp.Views.NewTrip = Backbone.View.extend({
 	},
 
   encodeFile: function (event) {
-       var that = this;
-       var file = event.currentTarget.files[0];
+     var that = this;
+     var file = event.currentTarget.files[0];
 
-       console.log(file);
+     console.log(file);
 
-       var reader = new FileReader();
-       reader.onload = function(e) {
-           console.log(e.target.result);
-           that.model.set({ trip_photo: e.target.result });
-       }
-       reader.onerror = function(stuff) {
-           console.log("error", stuff)
-           console.log (stuff.getMessage())
-       }
-       reader.readAsDataURL(file);
+     var reader = new FileReader();
+     reader.onload = function(e) {
+         console.log(e.target.result);
+         that.model.set({ trip_photo: e.target.result });
+     }
+     reader.onerror = function(stuff) {
+         console.log("error", stuff);
+         console.log(stuff.getMessage());
+     }
+     reader.readAsDataURL(file);
   },
 
 	latLng: function(destination, callback) {
