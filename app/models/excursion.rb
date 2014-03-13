@@ -48,7 +48,7 @@ class Excursion < ActiveRecord::Base
   end
 
   def trip_constraint
-    unless self.start >= self.trip.start_date && self.end <= self.trip.end_date
+    unless (self.start >= self.trip.start_date) && (self.end <= self.trip.end_date)
       errors.add(:base, "must be within trip time period")
     end
   end

@@ -1,13 +1,13 @@
 
 	<div class="col-xs-12 trip" id="content-item-main">
-		<div class="col-xs-2 image">
-			<img class="item-image" src="http://s3-us-west-1.amazonaws.com/travelapp-el/trips/trip_photos/000/000/066/med/base64.txt?1390556281">
+		<div class="col-xs-3 image">
+			<img data-id="<%= trip.get('id') %>" class="item-image" src="http://s3-us-west-1.amazonaws.com/travelapp-el/trips/trip_photos/000/000/066/med/base64.txt?1390556281">
 		</div>
 		<div class="col-xs-8">
-			<div class="col-xs-10 col-xs-offset-2 content">
+			<div class="col-xs-10 col-xs-offset-1 content">
 				<h4><%= trip.escape('title') %></h4>
 			</div>
-			<div class="col-xs-8 col-xs-offset-2 content">
+			<div class="col-xs-8 col-xs-offset-1 content">
 				<p><%= trip.escape('theme') %></p>
 				<p>From: <%= trip.escape('start_date') %> To: <%= trip.escape('end_date') %></p>
 				<p>Destination: <%= trip.escape('end_loc') %></p>

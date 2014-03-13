@@ -9,8 +9,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	},
 
 	events: {
-		'click button.dest-search' : 'queryPlaces',
-		'submit #new-excursion' : '_excursionsRender'
+		'click button.dest-search' : 'queryPlaces'
 	},
 
 	template: JST["trips/profile"],
@@ -40,7 +39,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	},
 
 	_installSideList: function() {
-		alert('in side list');
+		alert('installing side');
 		var sideListView = new TravelApp.Views.ExcursionSideList({
 			trip: this.model
 		});

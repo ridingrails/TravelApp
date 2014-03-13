@@ -6,6 +6,7 @@ TravelApp.Views.TripIndexItem = Backbone.View.extend({
 	},
 
 	events:  {
+		'click img.item-image' : 'showTrip',
 		'click button.remove' : 'destroyRes',
 	  'click button.join' : 'createRes'
 	},
@@ -75,6 +76,13 @@ TravelApp.Views.TripIndexItem = Backbone.View.extend({
 		  }
 	 })
   },
+
+	showTrip: function (event) {
+		event.preventDefault();
+		console.log($(event.currentTarget));
+		var tripId = $(event.currentTarget).attr('data-id');
+		TravelApp.mainRouter.navigate('trips/' + tripId, { trigger:true });
+	},
 
 	changeButton: function(target) {
 		if (target.hasClass('join')) {
