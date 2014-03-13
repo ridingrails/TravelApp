@@ -26,7 +26,7 @@ class Excursion < ActiveRecord::Base
         1
     SQL
 
-    results = Reservation.find_by_sql([query,
+    results = Excursion.find_by_sql([query,
                                           self.trip_id,
                                           self.start,
                                           self.end])

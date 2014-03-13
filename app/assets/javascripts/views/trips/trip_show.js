@@ -5,10 +5,12 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		var dest = this.model.get('start_loc');
 		this.latLng(dest, function () {
 		});
+	  this.listenTo(Backbone, "submit #new-excursion", this._installSideList);
 	},
 
 	events: {
-		'click button.dest-search' : 'queryPlaces'
+		'click button.dest-search' : 'queryPlaces',
+		'submit #new-excursion' : '_excursionsRender'
 	},
 
 	template: JST["trips/profile"],
@@ -22,7 +24,8 @@ TravelApp.Views.TripShow = Backbone.View.extend({
  		var destination = this.model.get('end_loc');
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
-		this._installSideList;
+		this._installSideList();
+		// $('div.excursion-panel').html(this._excursionsList);
 		return this;
 	},
 
@@ -41,7 +44,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		var sideListView = new TravelApp.Views.ExcursionSideList({
 			trip: this.model
 		});
-		$('.info-area-ul').html(sideListView.render().$el);
+		$('div.info-area-ul').html(sideListView.render().$el);
 	},
 
 	_mapMonths: function(num) {

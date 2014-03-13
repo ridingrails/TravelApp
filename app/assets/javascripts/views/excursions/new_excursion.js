@@ -48,11 +48,12 @@ TravelApp.Views.NewExcursion = Backbone.View.extend({
 		excursion.save({}, {
 			success: function (resp) {
 				alert(' ex saved');
-				Backbone.trigger("click div.user-photos", target);
-				var view = new TravelApp.Views.TripShow({
-					trip: this.trip
-				});
-				TravelApp.mainRouter._swapView(view);
+				var target = $(event.currentTarget);
+				Backbone.trigger("submit #new-excursion", target);
+				// var view = new TravelApp.Views.TripShow({
+				// 	trip: this.trip
+				// });
+				// TravelApp.mainRouter._swapView(view);
 				// TravelApp.mainRouter.navigate('/trips/' + tripId, { trigger: true });
 
 			},
