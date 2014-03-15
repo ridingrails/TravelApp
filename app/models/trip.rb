@@ -7,7 +7,7 @@ class Trip < ActiveRecord::Base
 
   validates_presence_of :planner_id, :title, :theme, :start_date, :start_loc
 
-  has_attached_file :trip_photo, :styles => {
+  has_attached_file :trip_photo, :default_url => "https://s3-us-west-1.amazonaws.com/travelapp-el/trips/rio.jpg", :styles => {
        :big => "1180x520#",
        :med => "240x160#",
        :small => "120x120#"
