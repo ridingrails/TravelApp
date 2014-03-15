@@ -1,11 +1,11 @@
 TravelApp.Models.Trip = Backbone.Model.extend({
 	parse: function(data) {
+		console.log(data);
 		var excursions = data.excursions;
 		data.excursions = new TravelApp.Collections.Excursions(excursions);
 		var attendees = data.attendees;
 		data.attendees = new TravelApp.Collections.Users(attendees);
 		return data;
-
 	},
 
 	initialize: function() {
@@ -15,9 +15,10 @@ TravelApp.Models.Trip = Backbone.Model.extend({
 
 	toJSON: function() {
 		var data = _.clone(this.attributes);
-		var photo = data.trip_photo;
-		data.trip.trip_photo = photo;
-		delete data.trip_photo;
+		if (data.trip_photo) {
+			data.trip.trip_photo = data.trip_photo;
+			delete data.trip_photo;
+		}
 		return data;
 	},
 

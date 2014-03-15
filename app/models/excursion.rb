@@ -1,5 +1,7 @@
 class Excursion < ActiveRecord::Base
+
   attr_accessible :title, :body, :trip_id, :place, :location, :note, :start, :end, :start_time, :end_time, :last_editor, :latitude, :longitude
+
 
   before_validation :enter_date_hours
 

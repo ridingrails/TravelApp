@@ -2,7 +2,6 @@ TravelApp.Views.TripIndexItem = Backbone.View.extend({
 
 	initialize: function(options) {
 		var tripItem = this.model;
-		console.log(this.model.get('excursions'));
 	},
 
 	events:  {
@@ -14,6 +13,7 @@ TravelApp.Views.TripIndexItem = Backbone.View.extend({
 	template: JST["trips/trip_index_item"],
 
 	render: function () {
+		console.log(this.model);
 		var newStart = this._parseTime(this.model.get('start_date'));
 		this.model.set('start_date', newStart);
 		var newEnd = this._parseTime(this.model.get('end_date'));
@@ -21,6 +21,7 @@ TravelApp.Views.TripIndexItem = Backbone.View.extend({
 
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
+		console.log(this.model);
 		return this;
 	},
 
