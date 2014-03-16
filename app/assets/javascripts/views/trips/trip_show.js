@@ -2,8 +2,9 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 	initialize: function() {
 	  var that = this;
-		var dest = this.model.get('start_loc');
-		this.latLng(dest, function () {
+		this.dest = this.model.get('start_loc');
+
+		this.latLng(this.dest, function () {
 		});
 	  this.listenTo(Backbone, "submit #new-excursion", this._installSideList);
 	},
@@ -23,6 +24,15 @@ TravelApp.Views.TripShow = Backbone.View.extend({
  		var destination = this.model.get('end_loc');
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
+		this.latitude = this.model.get('lat');
+		this.longitude = this.model.get('lng');
+	  this.mapOptions = {
+	    center: new google.maps.LatLng(this.latitude, this.longitude),
+	    zoom: 10
+	  };
+    this.map = new google.maps.Map($("#map-canvas")[0],
+      this.mapOptions);
+
 		this._installSideList;
 		return this;
 	},
@@ -84,17 +94,13 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 	},
 
 	buildMap: function () {
-		var latitude = this.model.get('lat');
+		var latitude = this.latitude;
   //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
-		var longitude = this.model.get('lng');
+		var longitude = this.longitude;
 	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
-    var mapOptions = {
-      center: new google.maps.LatLng(latitude, longitude),
-      zoom: 10
-    };
+    var mapOptions = this.mapOptions;
 
-    var map = new google.maps.Map($("#map-canvas")[0],
-      mapOptions);
+    var map = this.map;
 
 		var marker = new google.maps.Marker({
 	    position: mapOptions['center'],
@@ -144,80 +150,73 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		return view;
 	},
 
+	createMarker: function(loc, context) {
+		console.log(loc);
+
+		var that = this;
+		var markerLat = loc.geometry.location.lat();
+    var markerLng = loc.geometry.location.lng();
+		var marker = new google.maps.Marker({
+	    position: new google.maps.LatLng(markerLat, markerLng),
+	    map: map,
+	    title: loc.name,
+			draggable: true
+		});
+
+		var infoWindow = new google.maps.InfoWindow( { content: '<div><p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p><p></p</div><div class="lat">' + markerLat + '</div><div class="lng">' + markerLng + '</div>'});
+
+		google.maps.event.addListener(marker, 'drag', function(event) {
+		  // console.debug('new position is '+event.latLng.lat()+' / '+event.latLng.lng());
+		});
+
+		google.maps.event.addListener(marker, 'dragend', function(event) {
+		  // console.debug('final position is '+event.latLng.lat()+' / '+event.latLng.lng());
+			var pos = new google.maps.LatLng(markerLat, markerLng)
+			marker.setPosition(pos);
+			var coords = [event.latLng.lat(), event.latLng.lng()];
+			var mapBounds = map.getBounds();
+			var ne = mapBounds.getNorthEast().lng();
+			var sw = mapBounds.getSouthWest().lng();
+
+			if (event.latLng.lng() > ne) {
+				var exView = context.excursionView(loc);
+				// var excursion = new TravelApp.Models.Excursion();
+				// var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc, trip: this.model });
+
+				$('.info-area-ul').empty().prepend(exView.render().$el);
+			} else {
+				alert('not in main clause');
+			}
+		});
+
+  	google.maps.event.addListener(marker, 'click', function() {
+      infoWindow.open(map, marker);
+	    map.setCenter(marker.getPosition());
+	  });
+
+		google.maps.event.addListener(marker, 'dragstart', function(){
+		    map.set('draggable', false);
+		});
+		google.maps.event.addListener(marker, 'dragend', function(){
+		    map.set('draggable', true);
+		});
+
+	},
+
 	queryPlaces: function(event) {
 		event.preventDefault();
 		var target = $(event.currentTarget);
 		var excursionView = this.excursionView;
 		var the = this;
 		var thisTrip = the.model;
-		var latitude = this.model.get('lat');
+		var latitude = this.latitude;
   //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
-		var longitude = this.model.get('lng');
+		var longitude = this.longitude;
 	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
-    var mapOptions = {
-      center: new google.maps.LatLng(latitude, longitude),
-      zoom: 10
-    };
-
-    var map = new google.maps.Map($("#map-canvas")[0],
-      mapOptions);
 
     var queryString = $('input[name=dest-search]').val();
 
 	  service = new google.maps.places.PlacesService(map);
-
-		function createMarker(loc, context) {
-			console.log(loc);
-
-			var that = this;
-			var markerLat = loc.geometry.location.lat();
-      var markerLng = loc.geometry.location.lng();
-			var marker = new google.maps.Marker({
-		    position: new google.maps.LatLng(markerLat, markerLng),
-		    map: map,
-		    title: loc.name,
-				draggable: true
-			});
-
-			var infoWindow = new google.maps.InfoWindow( { content: '<div><p><strong>' + loc.name + '</strong></p>' + '<p>Rating: ' + loc.rating + '</p>' + '<p>Price level: ' + loc.price_level + '</p><p></p</div><div class="lat">' + markerLat + '</div><div class="lng">' + markerLng + '</div>'});
-
-			google.maps.event.addListener(marker, 'drag', function(event) {
-			  // console.debug('new position is '+event.latLng.lat()+' / '+event.latLng.lng());
-			});
-
-			google.maps.event.addListener(marker, 'dragend', function(event) {
-			  // console.debug('final position is '+event.latLng.lat()+' / '+event.latLng.lng());
-				var pos = new google.maps.LatLng(markerLat, markerLng)
-				marker.setPosition(pos);
-				var coords = [event.latLng.lat(), event.latLng.lng()];
-				var mapBounds = map.getBounds();
-				var ne = mapBounds.getNorthEast().lng();
-				var sw = mapBounds.getSouthWest().lng();
-
-				if (event.latLng.lng() > ne) {
-					var exView = context.excursionView(loc);
-					// var excursion = new TravelApp.Models.Excursion();
-					// var view = new TravelApp.Views.NewExcursion({ model: excursion, info: loc, trip: this.model });
-
-					$('.info-area-ul').empty().prepend(exView.render().$el);
-				} else {
-					alert('not in main clause');
-				}
-			});
-
-	  	google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.open(map, marker);
-		    map.setCenter(marker.getPosition());
-		  });
-
-			google.maps.event.addListener(marker, 'dragstart', function(){
-			    map.set('draggable', false);
-			});
-			google.maps.event.addListener(marker, 'dragend', function(){
-			    map.set('draggable', true);
-			});
-
-		}
 
 		if (!$('input[name=dest-search]').val()) {
 			alert('please enter a value');
@@ -234,8 +233,8 @@ TravelApp.Views.TripShow = Backbone.View.extend({
           for (var i = 0; i < results.length; i++) {
             var place = results[i];
             console.log(place);
-            createMarker(place, the);
-	      }
+            the.createMarker(place, the);
+	      	}
 	      } else {
 	        alert('search query issue');
 	      }
