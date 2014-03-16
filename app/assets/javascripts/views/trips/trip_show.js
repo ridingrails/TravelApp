@@ -2,9 +2,8 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 	initialize: function() {
 	  var that = this;
-		this.dest = this.model.get('start_loc');
-
-		this.latLng(this.dest, function () {
+		var dest = this.model.get('start_loc');
+		this.latLng(dest, function () {
 		});
 	  this.listenTo(Backbone, "submit #new-excursion", this._installSideList);
 	},
@@ -24,16 +23,20 @@ TravelApp.Views.TripShow = Backbone.View.extend({
  		var destination = this.model.get('end_loc');
 		var renderedContent = this.template({ trip: this.model });
 		this.$el.html(renderedContent);
-		this.latitude = this.model.get('lat');
-		this.longitude = this.model.get('lng');
-	  this.mapOptions = {
-	    center: new google.maps.LatLng(this.latitude, this.longitude),
-	    zoom: 10
-	  };
-    this.map = new google.maps.Map($("#map-canvas")[0],
-      this.mapOptions);
-
 		this._installSideList;
+		var latitude = this.model.get('lat');
+  //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
+		var longitude = this.model.get('lng');
+	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
+		// 	  var mapOptions = {
+		// 	    center: new google.maps.LatLng(latitude, longitude),
+		// 	    zoom: 10
+		// 	  };
+		//
+		//     var map = new google.maps.Map($("#map-canvas")[0],
+		//       mapOptions);
+		// this.map = map;
+
 		return this;
 	},
 
@@ -84,6 +87,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 			  that.model.set('lat', results[0].geometry.location.lat());
 				that.model.set('lng', results[0].geometry.location.lng());
         that.buildMap();
+
 				callback();
 
 			} else {
@@ -93,14 +97,56 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		});
 	},
 
-	buildMap: function () {
-		var latitude = this.latitude;
-  //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
-		var longitude = this.longitude;
-	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
-    var mapOptions = this.mapOptions;
+	loadExcursions: function (map) {
+		var that = this;
+		var excursions = this.model.get('excursions');
+		console.log(typeof excursions);
+		geo = new google.maps.Geocoder();
 
-    var map = this.map;
+		excursions.each(function (excursion) {
+			alert('excursion registered');
+			console.log(typeof excursions);
+			console.log(excursion);
+			var lat = parseFloat(excursion.get('latitude'));
+			var lng = parseFloat(excursion.get('longitude'));
+			var latlng = new google.maps.LatLng(lat, lng)
+			geo.geocode({
+				'latLng': latlng
+			}, function (results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					if (results[1]) {
+		        var marker = new google.maps.Marker({
+		          position: latlng,
+		          map: map,
+							title: excursion.title
+		        });
+						var infoWindow = new google.maps.InfoWindow();
+						console.log(results);
+		        infoWindow.setContent(results[1].formatted_address);
+		        infoWindow.open(map, marker);
+					}
+
+				} else {
+					alert('not ok');
+				}
+			});
+		});
+	},
+
+
+	buildMap: function () {
+		var that = this;
+		var latitude = this.model.get('lat');
+  //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
+		var longitude = this.model.get('lng');
+	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
+    var mapOptions = {
+	    center: new google.maps.LatLng(latitude, longitude),
+	    zoom: 10
+	  };
+
+    var map = new google.maps.Map($("#map-canvas")[0],
+      mapOptions);
 
 		var marker = new google.maps.Marker({
 	    position: mapOptions['center'],
@@ -116,7 +162,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
 		google.maps.event.addListener(marker, 'dragend', function(event) {
 		  console.debug('final position is '+event.latLng.lat()+' / '+event.latLng.lng());
-			var pos = mapOptions['center'];
+			var pos = that.mapOptions['center'];
 			marker.setPosition(pos);
 		});
 
@@ -141,6 +187,8 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 
     autocomplete.bindTo('bounds', map);
 
+		this.loadExcursions(map);
+
 	},
 
 	excursionView: function(loc) {
@@ -150,7 +198,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		return view;
 	},
 
-	createMarker: function(loc, context) {
+	createMarker: function(loc, context, map) {
 		console.log(loc);
 
 		var that = this;
@@ -209,10 +257,17 @@ TravelApp.Views.TripShow = Backbone.View.extend({
 		var excursionView = this.excursionView;
 		var the = this;
 		var thisTrip = the.model;
-		var latitude = this.latitude;
-  //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
-		var longitude = this.longitude;
+		var latitude = this.model.get('lat');
+	  //trip.escape('latLng')[0]; $('div.trip-details').attr('data-loc')[0];
+		var longitude = this.model.get('lng');
 	//trip.escape('latLng')[1]; $('div.trip-details').attr('data-loc')[1];
+    var mapOptions = {
+	    center: new google.maps.LatLng(latitude, longitude),
+	    zoom: 10
+	  };
+
+    var map = new google.maps.Map($("#map-canvas")[0],
+      mapOptions);
 
     var queryString = $('input[name=dest-search]').val();
 
@@ -233,7 +288,7 @@ TravelApp.Views.TripShow = Backbone.View.extend({
           for (var i = 0; i < results.length; i++) {
             var place = results[i];
             console.log(place);
-            the.createMarker(place, the);
+            the.createMarker(place, the, map);
 	      	}
 	      } else {
 	        alert('search query issue');
